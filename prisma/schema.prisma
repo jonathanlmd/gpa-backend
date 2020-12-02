@@ -1,0 +1,214 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model agendamento {
+  id               Int           @id
+  data             DateTime      @unique
+  paciente_id      Int
+  nutricionista_id Int
+  /// This field's default value can currently not be parsed: `b'0'`.
+  aceito           Int           @default(dbgenerated())
+  nutricionista    nutricionista @relation(fields: [nutricionista_id], references: [id])
+  paciente         paciente      @relation(fields: [paciente_id], references: [id])
+  consulta         consulta[]
+
+  @@index([nutricionista_id], name: "fk_agendamento_nutricionista1_idx")
+  @@index([paciente_id], name: "fk_agendamento_paciente1_idx")
+}
+
+model alimento {
+  id                                                       Int                      @id
+  medida                                                   Float
+  nome                                                     String
+  unindade                                                 String
+  caloria                                                  Float
+  refeicoes_has_alimento                                   refeicoes_has_alimento[]
+  substitutos_alimentoTosubstitutos_alimento_id            substitutos[]            @relation("alimentoTosubstitutos_alimento_id")
+  substitutos_alimentoTosubstitutos_alimento_substituto_id substitutos[]            @relation("alimentoTosubstitutos_alimento_substituto_id")
+}
+
+model anamnese {
+  id                    Int                     @id
+  descricao             String?
+  tipo                  String?
+  periculosidade        String?
+  anamnese_has_consulta anamnese_has_consulta[]
+}
+
+model anamnese_has_consulta {
+  anamnese_id Int
+  consulta_id Int
+  anamnese    anamnese @relation(fields: [anamnese_id], references: [id])
+  consulta    consulta @relation(fields: [consulta_id], references: [id])
+
+  @@id([anamnese_id, consulta_id])
+  @@index([anamnese_id], name: "fk_anamnese_has_consulta_anamnese1_idx")
+  @@index([consulta_id], name: "fk_anamnese_has_consulta_consulta1_idx")
+}
+
+model cidades {
+  id         Int        @id
+  nome       String
+  estados_id Int
+  estados    estados    @relation(fields: [estados_id], references: [id])
+  paciente   paciente[]
+
+  @@index([estados_id], name: "fk_cidades_estados1_idx")
+}
+
+model consulta {
+  id                       Int                     @id
+  valor                    Float
+  data                     DateTime
+  paciente_id              Int
+  agendamento_id           Int
+  plano_alimentar_id       Int
+  dados_antropometricos_id Int
+  observacoes              String?
+  agendamento              agendamento             @relation(fields: [agendamento_id], references: [id])
+  dados_antropometricos    dados_antropometricos   @relation(fields: [dados_antropometricos_id], references: [id])
+  paciente                 paciente                @relation(fields: [paciente_id], references: [id])
+  plano_alimentar          plano_alimentar         @relation(fields: [plano_alimentar_id], references: [id])
+  anamnese_has_consulta    anamnese_has_consulta[]
+
+  @@index([agendamento_id], name: "fk_consulta_agendamento1_idx")
+  @@index([dados_antropometricos_id], name: "fk_consulta_dados_antropometricos1_idx")
+  @@index([paciente_id], name: "fk_consulta_paciente1_idx")
+  @@index([plano_alimentar_id], name: "fk_consulta_plano_alimentar1_idx")
+}
+
+model dados_antropometricos {
+  id                           Int        @id
+  prega_cutanea_tricipital     Float
+  prega_cutanea_bicipital      Float
+  percentual_de_massa_muscular Float
+  circunferencia_da_cintura    Float
+  circunferencia_da_bra_o      Float      @map("circunferencia_da_braço")
+  altura                       Float
+  peso                         Float
+  supra_iliaca                 Float
+  gordura_viceral              Float
+  supra_escapular              Float
+  idade_metabolica             Int
+  bioimpedancia                Float
+  somatorio_de_pregas          Int
+  consulta                     consulta[]
+}
+
+model dica {
+  id               Int           @id
+  conteudo         String
+  data             DateTime
+  nutricionista_id Int
+  nutricionista    nutricionista @relation(fields: [nutricionista_id], references: [id])
+
+  @@index([nutricionista_id], name: "fk_dica_nutricionista_idx")
+}
+
+model estados {
+  id       Int       @id
+  nome     String
+  iniciais String
+  cidades  cidades[]
+}
+
+model noticia {
+  id               Int           @id
+  titulo           String
+  link             String?
+  descri__o        String?       @map("descrição")
+  data             DateTime
+  nutricionista_id Int
+  image_link       String?
+  nutricionista    nutricionista @relation(fields: [nutricionista_id], references: [id])
+
+  @@index([nutricionista_id], name: "fk_noticia_nutricionista_idx")
+}
+
+model nutricionista {
+  id          Int           @id
+  crn         String
+  senha       String
+  email       String
+  nome        String
+  agendamento agendamento[]
+  dica        dica[]
+  noticia     noticia[]
+}
+
+model paciente {
+  id                    Int           @id
+  autorizacao_de_acesso Int
+  cpf                   String
+  telefone              String?
+  nome                  String
+  email                 String
+  senha                 String
+  data_nascimento       DateTime
+  cidades_id            Int
+  bairro                String
+  logradouro            String
+  cep                   Int
+  numero                Int
+  complemento           String
+  cidades               cidades       @relation(fields: [cidades_id], references: [id])
+  agendamento           agendamento[]
+  consulta              consulta[]
+
+  @@index([cidades_id], name: "fk_paciente_cidades1_idx")
+}
+
+model plano_alimentar {
+  id          Int         @id
+  orientacoes String?
+  consulta    consulta[]
+  refeicoes   refeicoes[]
+}
+
+model refeicoes {
+  id                     Int                      @id
+  nome                   String
+  plano_alimentar_id     Int
+  observac_es            String?                  @map("observacões")
+  plano_alimentar        plano_alimentar          @relation(fields: [plano_alimentar_id], references: [id])
+  refeicoes_has_alimento refeicoes_has_alimento[]
+
+  @@index([plano_alimentar_id], name: "fk_refeicoes_plano_alimentar1_idx")
+}
+
+model refeicoes_has_alimento {
+  refeicoes_id Int
+  alimento_id  Int
+  medida       Float
+  descricao    String?
+  alimento     alimento  @relation(fields: [alimento_id], references: [id])
+  refeicoes    refeicoes @relation(fields: [refeicoes_id], references: [id])
+
+  @@id([refeicoes_id, alimento_id])
+  @@index([alimento_id], name: "fk_refeicoes_has_alimento_alimento1_idx")
+  @@index([refeicoes_id], name: "fk_refeicoes_has_alimento_refeicoes1_idx")
+}
+
+model restricoes_de_horario_semanal {
+  id   Int      @id
+  data DateTime
+}
+
+model substitutos {
+  alimento_id                                           Int
+  alimento_substituto_id                                Int
+  medida                                                Float
+  descricao                                             String?
+  alimento_alimentoTosubstitutos_alimento_id            alimento @relation("alimentoTosubstitutos_alimento_id", fields: [alimento_id], references: [id])
+  alimento_alimentoTosubstitutos_alimento_substituto_id alimento @relation("alimentoTosubstitutos_alimento_substituto_id", fields: [alimento_substituto_id], references: [id])
+
+  @@id([alimento_id, alimento_substituto_id])
+  @@index([alimento_id], name: "fk_alimento_has_alimento_alimento1_idx")
+  @@index([alimento_substituto_id], name: "fk_alimento_has_alimento_alimento2_idx")
+}
