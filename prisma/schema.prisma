@@ -8,7 +8,7 @@ datasource db {
 }
 
 model agendamento {
-  id               Int           @id
+  id               Int           @id @default(autoincrement())
   data             DateTime      @unique
   paciente_id      Int
   nutricionista_id Int
@@ -23,7 +23,7 @@ model agendamento {
 }
 
 model alimento {
-  id                                                       Int                      @id
+  id                                                       Int                      @id @default(autoincrement())
   medida                                                   Float
   nome                                                     String
   unindade                                                 String
@@ -34,7 +34,7 @@ model alimento {
 }
 
 model anamnese {
-  id                    Int                     @id
+  id                    Int                     @id @default(autoincrement())
   descricao             String?
   tipo                  String?
   periculosidade        String?
@@ -42,7 +42,7 @@ model anamnese {
 }
 
 model anamnese_has_consulta {
-  anamnese_id Int
+  anamnese_id Int      @default(autoincrement())
   consulta_id Int
   anamnese    anamnese @relation(fields: [anamnese_id], references: [id])
   consulta    consulta @relation(fields: [consulta_id], references: [id])
@@ -53,7 +53,7 @@ model anamnese_has_consulta {
 }
 
 model cidades {
-  id         Int        @id
+  id         Int        @id @default(autoincrement())
   nome       String
   estados_id Int
   estados    estados    @relation(fields: [estados_id], references: [id])
@@ -63,7 +63,7 @@ model cidades {
 }
 
 model consulta {
-  id                       Int                     @id
+  id                       Int                     @id @default(autoincrement())
   valor                    Float
   data                     DateTime
   paciente_id              Int
@@ -84,7 +84,7 @@ model consulta {
 }
 
 model dados_antropometricos {
-  id                           Int        @id
+  id                           Int        @id @default(autoincrement())
   prega_cutanea_tricipital     Float
   prega_cutanea_bicipital      Float
   percentual_de_massa_muscular Float
@@ -102,7 +102,7 @@ model dados_antropometricos {
 }
 
 model dica {
-  id               Int           @id
+  id               Int           @id @default(autoincrement())
   conteudo         String
   data             DateTime
   nutricionista_id Int
@@ -112,14 +112,14 @@ model dica {
 }
 
 model estados {
-  id       Int       @id
+  id       Int       @id @default(autoincrement())
   nome     String
   iniciais String
   cidades  cidades[]
 }
 
 model noticia {
-  id               Int           @id
+  id               Int           @id @default(autoincrement())
   titulo           String
   link             String?
   descri__o        String?       @map("descrição")
@@ -132,7 +132,7 @@ model noticia {
 }
 
 model nutricionista {
-  id          Int           @id
+  id          Int           @id @default(autoincrement())
   crn         String
   senha       String
   email       String
@@ -143,7 +143,7 @@ model nutricionista {
 }
 
 model paciente {
-  id                    Int           @id
+  id                    Int           @id @default(autoincrement())
   autorizacao_de_acesso Int
   cpf                   String
   telefone              String?
@@ -165,14 +165,14 @@ model paciente {
 }
 
 model plano_alimentar {
-  id          Int         @id
+  id          Int         @id @default(autoincrement())
   orientacoes String?
   consulta    consulta[]
   refeicoes   refeicoes[]
 }
 
 model refeicoes {
-  id                     Int                      @id
+  id                     Int                      @id @default(autoincrement())
   nome                   String
   plano_alimentar_id     Int
   observac_es            String?                  @map("observacões")
@@ -183,7 +183,7 @@ model refeicoes {
 }
 
 model refeicoes_has_alimento {
-  refeicoes_id Int
+  refeicoes_id Int       @default(autoincrement())
   alimento_id  Int
   medida       Float
   descricao    String?
@@ -196,12 +196,12 @@ model refeicoes_has_alimento {
 }
 
 model restricoes_de_horario_semanal {
-  id   Int      @id
+  id   Int      @id @default(autoincrement())
   data DateTime
 }
 
 model substitutos {
-  alimento_id                                           Int
+  alimento_id                                           Int      @default(autoincrement())
   alimento_substituto_id                                Int
   medida                                                Float
   descricao                                             String?
