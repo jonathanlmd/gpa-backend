@@ -11,6 +11,12 @@ import ShowPatientProfileService from './PatientServices/ShowPatientProfileServi
 import UpdatePatientProfileService from './PatientServices/UpdatePatientProfileService';
 import DeletePatientService from './PatientServices/DeletePatientService';
 
+import CreateFoodService from './FoodServices/CreateFoodService';
+import ListFoodService from './FoodServices/ListFoodService';
+import ShowFoodService from './FoodServices/ShowFoodService';
+import UpdateFoodService from './FoodServices/UpdateFoodService';
+import DeleteFoodService from './FoodServices/DeleteFoodService';
+
 export {
 	AuthenticateNutritionistService,
 	AuthenticatePatientService,
@@ -22,4 +28,9 @@ export {
 	ShowPatientProfileService,
 	UpdatePatientProfileService,
 	DeletePatientService,
+	CreateFoodService,
+	ListFoodService,
+	ShowFoodService,
+	UpdateFoodService,
+	DeleteFoodService,
 };
