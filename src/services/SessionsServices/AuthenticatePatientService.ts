@@ -1,9 +1,9 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 import { paciente as Patient } from '@prisma/client';
-import authConfig from '../config/auth';
-import IHashProvider from '../provider/HashProvider/models/IHashProvider';
-import { IPatientRepository } from '../repositories/model/IPatientRepository';
+import authConfig from '../../config/auth';
+import IHashProvider from '../../providers/HashProvider/models/IHashProvider';
+import IPatientRepository from '../../repositories/model/IPatientRepository';
 
 interface IRequestDTO {
 	email: string;

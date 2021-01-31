@@ -1,9 +1,9 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 import { nutricionista as Nutritionist } from '@prisma/client';
-import authConfig from '../config/auth';
-import IHashProvider from '../provider/HashProvider/models/IHashProvider';
-import { INutritionistRepository } from '../repositories/model/INutritionistRepository';
+import authConfig from '../../config/auth';
+import IHashProvider from '../../providers/HashProvider/models/IHashProvider';
+import INutritionistRepository from '../../repositories/model/INutritionistRepository';
 
 interface IRequestDTO {
 	email: string;
@@ -50,8 +50,7 @@ class AuthenticateNutritionistService {
 			expiresIn,
 		});
 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { senha, ...nutritionistWithoutPassword } = nutritionist;
+		const { senha: _, ...nutritionistWithoutPassword } = nutritionist;
 		return {
 			user: nutritionistWithoutPassword,
 			token,

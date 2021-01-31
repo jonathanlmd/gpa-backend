@@ -22,15 +22,11 @@
 	],
 	"rules": {
 		"no-useless-constructor": "off",
+		"no-return-await": "off",
 		"prettier/prettier": "error",
 		"camelcase": "off",
 		"class-methods-use-this": "off",
-		"@typescript-eslint/no-unused-vars": [
-			"error",
-			{
-				"argsIgnorePattern": "_"
-			}
-		],
+
 		"import/extensions": [
 			"error",
 			"ignorePackages",

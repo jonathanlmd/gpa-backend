@@ -1,66 +1,126 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
-import { sign } from 'jsonwebtoken';
-import { compare, hash } from 'bcryptjs';
-// import { v4 as uuid } from 'uuid';
+import { container } from 'tsyringe';
+import {
+	CreatePatientService,
+	UpdatePatientProfileService,
+	ShowPatientProfileService,
+	ListPatientService,
+	DeletePatientService,
+} from '../services';
 
 export default class PatientController {
 	public async create(request: Request, response: Response): Promise<Response> {
 		const {
 			email,
 			password,
-			data_nascimento,
-			autorizacao_de_acesso,
+			birthday,
+			authorization,
 			cpf,
-			numero,
-			nome,
-			bairro,
-			complemento,
-			logradouro,
-			cep,
-			cidades,
+			number,
+			name,
+			district,
+			complement,
+			street,
+			zipCode,
+			phone,
+			city_id,
 		} = request.body;
 
-		try {
-			const prismaClient = new PrismaClient();
-			console.log('ok');
+		const createPatientService = await container.resolve(CreatePatientService);
 
-			const city = await prismaClient.cidades.findFirst({
-				where: {
-					id: 1,
-				},
-			});
-			console.log(city);
-			let patient;
+		const patient = await createPatientService.execute({
+			email,
+			senha: password,
+			data_nascimento: birthday,
+			autorizacao_de_acesso: authorization,
+			cpf,
+			numero: number,
+			nome: name,
+			bairro: district,
+			complemento: complement,
+			logradouro: street,
+			cep: zipCode,
+			cidades_id: city_id,
+			telefone: phone,
+		});
 
-			if (city) {
-				patient = await prismaClient.paciente.create({
-					data: {
-						data_nascimento: new Date(),
-						autorizacao_de_acesso: 1,
-						cpf: '0981231',
-						nome: 'Hugo Davi',
-						numero: 300,
-						bairro: 'asd',
-						complemento: 'sda',
-						logradouro: 'asdasd',
-						cep: 123123,
-						cidades: {
-							connect: city,
-						},
-						email: 'teste@email.com',
-						senha: await hash(password, 24),
-					},
-				});
-			}
+		return response.json(patient);
+	}
 
-			console.log('ok b', patient);
+	public async update(request: Request, response: Response): Promise<Response> {
+		const {
+			id,
+			email,
+			password,
+			old_password,
+			birthday,
+			authorization,
+			cpf,
+			number,
+			name,
+			district,
+			complement,
+			street,
+			zipCode,
+			phone,
+			city_id,
+		} = request.body;
 
-			return response.json({ patient });
-		} catch (err) {
-			console.log(err);
+		const updatePatientProfileService = await container.resolve(
+			UpdatePatientProfileService,
+		);
 
-			return response.json({ err });
-		}
+		const updatedPatient = await updatePatientProfileService.execute({
+			id,
+			email,
+			senha: password,
+			senha_antiga: old_password,
+			data_nascimento: birthday,
+			autorizacao_de_acesso: authorization,
+			cpf,
+			numero: number,
+			nome: name,
+			bairro: district,
+			complemento: complement,
+			logradouro: street,
+			cep: zipCode,
+			cidades_id: city_id,
+			telefone: phone,
+		});
+
+		return response.json(updatedPatient);
+	}
+
+	public async show(request: Request, response: Response): Promise<Response> {
+		const { id } = request.params;
+
+		const showPatientProfileService = await container.resolve(
+			ShowPatientProfileService,
+		);
+
+		const showPatient = await showPatientProfileService.execute({
+			id: parseInt(id, 10),
+		});
+
+		return response.json(showPatient);
+	}
+
+	public async list(request: Request, response: Response): Promise<Response> {
+		const listPatientService = await container.resolve(ListPatientService);
+
+		const patients = await listPatientService.execute();
+
+		return response.json(patients);
+	}
+
+	public async delete(request: Request, response: Response): Promise<Response> {
+		const { id } = request.params;
+		const deletePatientService = await container.resolve(DeletePatientService);
+
+		const patients = await deletePatientService.execute({
+			id: parseInt(id, 10),
+		});
+
+		return response.json(patients);
 	}
 }

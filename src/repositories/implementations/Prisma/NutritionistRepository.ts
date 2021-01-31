@@ -13,20 +13,16 @@ export default class NutritionistRepository implements INutritionistRepository {
 	}
 
 	public async create(nutritionist: Nutritionist): Promise<Nutritionist> {
-		const newNutritionist = await this.prismaClient.nutricionista.create({
+		return await this.prismaClient.nutricionista.create({
 			data: nutritionist,
 		});
-
-		return newNutritionist;
 	}
 
 	public async findByEmail(email: string): Promise<Nutritionist | null> {
-		const nutritionist = await this.prismaClient.nutricionista.findFirst({
+		return await this.prismaClient.nutricionista.findFirst({
 			where: {
 				email,
 			},
 		});
-
-		return nutritionist;
 	}
 }

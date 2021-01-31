@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import AuthenticateNutritionistService from '../services/AuthenticateNutritionistService';
-import AuthenticatePatientService from '../services/AuthenticatePatientService';
+import {
+	AuthenticateNutritionistService,
+	AuthenticatePatientService,
+} from '../services';
 
 export default class SessionsController {
 	async patientLogin(request: Request, response: Response): Promise<Response> {
