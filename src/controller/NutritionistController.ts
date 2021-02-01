@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { CreateNutritionistService } from '../services';
+import { CreateNutritionistService } from '../services/NutritionistServices';
 
 export default class NutritionistController {
 	public async create(request: Request, response: Response): Promise<Response> {

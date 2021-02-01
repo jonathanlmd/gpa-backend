@@ -6,7 +6,7 @@ import {
 	ShowPatientProfileService,
 	ListPatientService,
 	DeletePatientService,
-} from '../services';
+} from '../services/PatientServices';
 
 export default class PatientController {
 	public async create(request: Request, response: Response): Promise<Response> {

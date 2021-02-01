@@ -4,7 +4,7 @@ import IFoodRepository from '../../repositories/model/IFoodRepository';
 import AppError from '../../errors/AppError';
 
 @injectable()
-class CreatePatientService {
+class CreateFoodService {
 	constructor(
 		@inject('FoodRepository')
 		private foodRepository: IFoodRepository,
@@ -23,4 +23,4 @@ class CreatePatientService {
 	}
 }
 
-export default CreatePatientService;
+export default CreateFoodService;

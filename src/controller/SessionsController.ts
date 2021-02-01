@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import {
 	AuthenticateNutritionistService,
 	AuthenticatePatientService,
-} from '../services';
+} from '../services/SessionsServices';
 
 export default class SessionsController {
 	async patientLogin(request: Request, response: Response): Promise<Response> {

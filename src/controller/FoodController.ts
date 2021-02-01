@@ -6,7 +6,7 @@ import {
 	ShowFoodService,
 	ListFoodService,
 	DeleteFoodService,
-} from '../services';
+} from '../services/FoodServices';
 
 export default class FoodController {
 	public async create(request: Request, response: Response): Promise<Response> {
