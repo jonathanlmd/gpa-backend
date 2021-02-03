@@ -3,6 +3,7 @@
 		"target": "es5",
 		"module": "commonjs",
 		"outDir": "./dist",
+		"lib": ["es2020"],
 		"rootDir": ".",
 		"strictPropertyInitialization": false,
 		"baseUrl": "./src",

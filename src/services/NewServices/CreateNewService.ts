@@ -19,7 +19,6 @@ class CreateNewService {
 			nutricionista_id,
 			image_link,
 		} = new_;
-		console.log(new_);
 
 		if (
 			!(titulo && link && descri__o && data && nutricionista_id && image_link)

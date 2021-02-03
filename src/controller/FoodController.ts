@@ -10,7 +10,7 @@ import {
 
 export default class FoodController {
 	public async create(request: Request, response: Response): Promise<Response> {
-		const { name, measure, unity, calories } = request.body;
+		const { name, measure, unity, calories, substitutions } = request.body;
 
 		const createFoodService = await container.resolve(CreateFoodService);
 
@@ -19,13 +19,14 @@ export default class FoodController {
 			medida: measure,
 			caloria: calories,
 			unindade: unity,
+			substitutions,
 		});
 
 		return response.json(food);
 	}
 
 	public async update(request: Request, response: Response): Promise<Response> {
-		const { id, name, measure, unity, calories } = request.body;
+		const { id, name, measure, unity, calories, substitutions } = request.body;
 
 		const updateFoodService = await container.resolve(UpdateFoodService);
 
@@ -35,6 +36,7 @@ export default class FoodController {
 			caloria: calories,
 			medida: measure,
 			nome: name,
+			substitutions,
 		});
 
 		return response.json(updatedFood);

@@ -16,7 +16,7 @@ export default class FoodRepository implements IFoodRepository {
 		});
 	}
 
-	public async update(food: Food): Promise<Food> {
+	public async update(food: Food): Promise<IFoodUpdateResponse> {
 		const { id, ...food_ } = food;
 		return await this.prismaClient.alimento.update({
 			data: {
@@ -24,6 +24,9 @@ export default class FoodRepository implements IFoodRepository {
 			},
 			where: {
 				id,
+			},
+			include: {
+				substitutos_alimentoTosubstitutos_alimento_id: true,
 			},
 		});
 	}
