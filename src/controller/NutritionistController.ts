@@ -11,8 +11,8 @@ export default class NutritionistController {
 
 		const nutritionist = await createNutritionistService.execute({
 			email,
-			senha: password,
-			nome: name,
+			password,
+			name,
 			crn,
 		});
 

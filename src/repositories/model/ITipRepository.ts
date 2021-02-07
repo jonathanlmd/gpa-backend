@@ -1,10 +1,10 @@
-import { dica as Tip } from '@prisma/client';
+import { Tip } from '@prisma/client';
 
 interface ITipUpdate {
 	id: number;
-	conteudo?: string;
-	data?: Date;
-	nutricionista_id?: number;
+	content?: string;
+	date?: Date;
+	nutritionist_id?: number;
 }
 
 export default interface ITipRepository {

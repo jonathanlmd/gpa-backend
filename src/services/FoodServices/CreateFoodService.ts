@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { alimento as Food, substitutos as Substitutions } from '@prisma/client';
+import { Food, Substitution } from '@prisma/client';
 import ISubstitutionRepository from '../../repositories/model/ISubstitutionRepository';
 import IFoodRepository from '../../repositories/model/IFoodRepository';
 import AppError from '../../errors/AppError';
@@ -12,7 +12,7 @@ interface IParams extends Omit<Food, 'id'> {
 	}>;
 }
 interface IResponse extends Food {
-	substitutions: Substitutions[];
+	substitutions: Substitution[];
 }
 
 @injectable()
@@ -25,17 +25,17 @@ class CreateFoodService {
 	) {}
 
 	public async execute(food: IParams): Promise<IResponse> {
-		const { medida, caloria, nome, unindade, substitutions } = food;
+		const { measure, calories, name, unity, substitutions } = food;
 
-		if (!(medida && caloria && nome && unindade)) {
+		if (!(measure && calories && name && unity)) {
 			throw new AppError('All fields should be informed');
 		}
 
 		const newFood = await this.foodRepository.create({
-			medida,
-			caloria,
-			nome,
-			unindade,
+			measure,
+			calories,
+			name,
+			unity,
 		});
 
 		let createdSubstitutions;
@@ -43,14 +43,16 @@ class CreateFoodService {
 			createdSubstitutions = await Promise.allSettled(
 				substitutions
 					.filter(subs => subs.id !== newFood.id)
-					.map(async ({ id: substitution_id, measure, description }) => {
-						return await this.substitutionRepository.create({
-							alimento_id: newFood.id,
-							alimento_substituto_id: substitution_id,
-							descricao: description,
-							medida: measure,
-						});
-					}),
+					.map(
+						async ({ id: substitution_id, measure: measure_, description }) => {
+							return await this.substitutionRepository.create({
+								food_id: substitution_id,
+								food_substitution_id: newFood.id,
+								description,
+								measure: measure_,
+							});
+						},
+					),
 			);
 		}
 
@@ -58,7 +60,7 @@ class CreateFoodService {
 			substitutions: createdSubstitutions
 				? createdSubstitutions
 						.filter(resp => resp.status === 'fulfilled')
-						.map((resp: any) => resp.value as Substitutions)
+						.map((resp: any) => resp.value as Substitution)
 				: [],
 			...newFood,
 		};

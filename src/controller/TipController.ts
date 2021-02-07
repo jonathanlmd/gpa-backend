@@ -15,9 +15,9 @@ export default class TipController {
 		const createTipService = await container.resolve(CreateTipService);
 
 		const tip = await createTipService.execute({
-			conteudo: content,
-			data: date,
-			nutricionista_id: nutritionist_id,
+			content,
+			date,
+			nutritionist_id,
 		});
 
 		return response.json(tip);
@@ -30,9 +30,9 @@ export default class TipController {
 
 		const updatedTip = await updateTipService.execute({
 			id,
-			conteudo: content,
-			data: date,
-			nutricionista_id: nutritionist_id,
+			content,
+			date,
+			nutritionist_id,
 		});
 
 		return response.json(updatedTip);

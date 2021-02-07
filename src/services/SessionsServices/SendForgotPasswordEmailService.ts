@@ -45,20 +45,21 @@ export default class SendForgotPasswordEmailService {
 		const forgotPasswordTemplate = path.resolve(
 			__dirname,
 			'..',
+			'..',
 			'views',
 			'forgot_password.hbs',
 		);
 
 		await this.mailProvider.sendMail({
 			to: {
-				name: patient.nome,
+				name: patient.name,
 				email: patient.email,
 			},
 			subject: '[GPA] Recuperação de senha',
 			templateData: {
 				file: forgotPasswordTemplate,
 				variables: {
-					name: patient.nome,
+					name: patient.name,
 					link: `${process.env.WEB_APP_URL}/reset_password?token=${token}`,
 				},
 			},

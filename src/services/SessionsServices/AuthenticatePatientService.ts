@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
-import { paciente as Patient } from '@prisma/client';
+import { Patient } from '@prisma/client';
 import authConfig from '../../config/auth';
 import IHashProvider from '../../providers/HashProvider/models/IHashProvider';
 import IPatientRepository from '../../repositories/model/IPatientRepository';
@@ -11,7 +11,7 @@ interface IRequestDTO {
 }
 
 interface IResponseDTO {
-	user: Omit<Patient, 'senha'>;
+	user: Omit<Patient, 'password'>;
 	token: string;
 }
 
@@ -36,7 +36,7 @@ class AuthenticatePatientService {
 
 		const passwordMatched = await this.hashProvider.compareHash(
 			password,
-			patient.senha,
+			patient.password,
 		);
 
 		if (!passwordMatched) {
@@ -50,8 +50,7 @@ class AuthenticatePatientService {
 			expiresIn,
 		});
 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { senha, ...patientWithoutPassword } = patient;
+		const { password: _, ...patientWithoutPassword } = patient;
 		return {
 			user: patientWithoutPassword,
 			token,

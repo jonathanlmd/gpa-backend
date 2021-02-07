@@ -1,4 +1,4 @@
-import { paciente as Patient, PrismaClient, Prisma } from '@prisma/client';
+import { Patient, PrismaClient, Prisma } from '@prisma/client';
 import IPatientRepository from '../../model/IPatientRepository';
 
 export default class PatientRepository implements IPatientRepository {
@@ -9,13 +9,13 @@ export default class PatientRepository implements IPatientRepository {
 	}
 
 	public async create(patient: Omit<Patient, 'id'>): Promise<Patient> {
-		const { cidades_id, ...patient_ } = patient;
-		return await this.prismaClient.paciente.create({
+		const { city_id, ...patient_ } = patient;
+		return await this.prismaClient.patient.create({
 			data: {
 				...patient_,
-				cidades: {
+				city: {
 					connect: {
-						id: cidades_id,
+						id: city_id,
 					},
 				},
 			},
@@ -23,23 +23,23 @@ export default class PatientRepository implements IPatientRepository {
 	}
 
 	public async findByEmail(email: string): Promise<Patient | null> {
-		return await this.prismaClient.paciente.findFirst({
+		return await this.prismaClient.patient.findFirst({
 			where: {
 				email,
 			},
 		});
 	}
 
-	public async update(patient: Patient): Promise<Omit<Patient, 'senha'>> {
-		const { id, cidades_id, ...patient_ } = patient;
-		return await this.prismaClient.paciente.update({
+	public async update(patient: Patient): Promise<Omit<Patient, 'password'>> {
+		const { id, city_id, ...patient_ } = patient;
+		return await this.prismaClient.patient.update({
 			data: {
 				...patient_,
-				...(cidades_id
+				...(city_id
 					? {
-							cidades: {
+							city: {
 								connect: {
-									id: cidades_id,
+									id: city_id,
 								},
 							},
 					  }
@@ -49,29 +49,29 @@ export default class PatientRepository implements IPatientRepository {
 				id,
 			},
 			select: {
-				agendamento: true,
-				autorizacao_de_acesso: true,
-				bairro: true,
-				cep: true,
-				cidades: true,
-				cidades_id: true,
-				complemento: true,
-				consulta: true,
+				appointment: true,
+				access_authorization: true,
+				district: true,
+				zip: true,
+				city: true,
+				city_id: true,
+				adjunct: true,
+				consultation: true,
 				cpf: true,
-				data_nascimento: true,
+				birthday: true,
 				email: true,
 				id: true,
-				logradouro: true,
-				nome: true,
-				numero: true,
-				senha: false,
-				telefone: true,
+				street: true,
+				name: true,
+				number: true,
+				password: false,
+				phone: true,
 			},
 		});
 	}
 
 	public async findById(id: number): Promise<Patient | null> {
-		return await this.prismaClient.paciente.findFirst({
+		return await this.prismaClient.patient.findFirst({
 			where: {
 				id,
 			},
@@ -79,34 +79,34 @@ export default class PatientRepository implements IPatientRepository {
 	}
 
 	public async getAll(): Promise<any> {
-		return await this.prismaClient.paciente.findMany({
+		return await this.prismaClient.patient.findMany({
 			select: {
-				senha: false,
-				agendamento: true,
-				autorizacao_de_acesso: true,
-				bairro: true,
-				cep: true,
-				cidades: {
+				password: false,
+				appointment: true,
+				access_authorization: true,
+				district: true,
+				zip: true,
+				city: {
 					include: {
-						estados: true,
+						state: true,
 					},
 				},
-				complemento: true,
-				consulta: true,
+				adjunct: true,
+				consultation: true,
 				cpf: true,
-				data_nascimento: true,
+				birthday: true,
 				email: true,
 				id: true,
-				logradouro: true,
-				nome: true,
-				numero: true,
-				telefone: true,
+				street: true,
+				name: true,
+				number: true,
+				phone: true,
 			},
 		});
 	}
 
 	public async delete(id: number): Promise<Patient> {
-		return await this.prismaClient.paciente.delete({
+		return await this.prismaClient.patient.delete({
 			where: {
 				id,
 			},

@@ -1,10 +1,10 @@
-import { substitutos as Substitution } from '@prisma/client';
+import { Substitution } from '@prisma/client';
 
 export interface ISubstitutionUpdate {
-	alimento_id: number;
-	alimento_substituto_id: number;
-	medida?: number;
-	descricao?: string | null;
+	food_id: number;
+	food_substitution_id: number;
+	measure?: number;
+	description?: string | null;
 }
 
 export interface ISubstitutionIds {

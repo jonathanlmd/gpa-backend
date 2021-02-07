@@ -1,8 +1,4 @@
-import {
-	substitutos as Substitution,
-	PrismaClient,
-	Prisma,
-} from '@prisma/client';
+import { Substitution, PrismaClient, Prisma } from '@prisma/client';
 import ISubstitutionRepository, {
 	ISubstitutionUpdate,
 	ISubstitutionIds,
@@ -17,23 +13,23 @@ export default class SubstitutionRepository implements ISubstitutionRepository {
 
 	public async create(substitution: Substitution): Promise<Substitution> {
 		const {
-			alimento_id,
-			alimento_substituto_id,
-			descricao,
-			medida,
+			food_id,
+			food_substitution_id,
+			description,
+			measure,
 		} = substitution;
-		return await this.prismaClient.substitutos.create({
+		return await this.prismaClient.substitution.create({
 			data: {
-				descricao,
-				medida,
-				alimento_alimentoTosubstitutos_alimento_id: {
+				description,
+				measure,
+				is_substitution_for: {
 					connect: {
-						id: alimento_id,
+						id: food_id,
 					},
 				},
-				alimento_alimentoTosubstitutos_alimento_substituto_id: {
+				substitution: {
 					connect: {
-						id: alimento_substituto_id,
+						id: food_substitution_id,
 					},
 				},
 			},
@@ -44,20 +40,20 @@ export default class SubstitutionRepository implements ISubstitutionRepository {
 		substitution: ISubstitutionUpdate,
 	): Promise<Substitution> {
 		const {
-			alimento_id,
-			alimento_substituto_id,
-			descricao,
-			medida,
+			food_id,
+			food_substitution_id,
+			description,
+			measure,
 		} = substitution;
-		return await this.prismaClient.substitutos.update({
+		return await this.prismaClient.substitution.update({
 			data: {
-				descricao,
-				medida,
+				description,
+				measure,
 			},
 			where: {
-				alimento_id_alimento_substituto_idZ: {
-					alimento_id,
-					alimento_substituto_id,
+				food_id_food_substitution_id: {
+					food_id,
+					food_substitution_id,
 				},
 			},
 		});
@@ -67,18 +63,18 @@ export default class SubstitutionRepository implements ISubstitutionRepository {
 		food_id,
 		substitution_id,
 	}: ISubstitutionIds): Promise<Substitution | null> {
-		return await this.prismaClient.substitutos.findFirst({
+		return await this.prismaClient.substitution.findFirst({
 			where: {
-				alimento_id: food_id,
-				alimento_substituto_id: substitution_id,
+				food_id,
+				food_substitution_id: substitution_id,
 			},
 		});
 	}
 
 	public async getByFood(food_id: number): Promise<Substitution[]> {
-		return await this.prismaClient.substitutos.findMany({
+		return await this.prismaClient.substitution.findMany({
 			where: {
-				alimento_id: food_id,
+				food_id,
 			},
 		});
 	}
@@ -86,17 +82,17 @@ export default class SubstitutionRepository implements ISubstitutionRepository {
 	public async getBySubstitution(
 		substitution_id: number,
 	): Promise<Substitution[]> {
-		return await this.prismaClient.substitutos.findMany({
+		return await this.prismaClient.substitution.findMany({
 			where: {
-				alimento_substituto_id: substitution_id,
+				food_substitution_id: substitution_id,
 			},
 		});
 	}
 
 	public async deleteByFood(food_id: number): Promise<any> {
-		return await this.prismaClient.substitutos.deleteMany({
+		return await this.prismaClient.substitution.deleteMany({
 			where: {
-				alimento_id: food_id,
+				food_id,
 			},
 		});
 	}

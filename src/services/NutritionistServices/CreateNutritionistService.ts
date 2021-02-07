@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { nutricionista as Nutritionist } from '@prisma/client';
+import { Nutritionist } from '@prisma/client';
 import INutritionistRepository from '../../repositories/model/INutritionistRepository';
 import IHashProvider from '../../providers/HashProvider/models/IHashProvider';
 import AppError from '../../errors/AppError';
@@ -15,10 +15,10 @@ class CreatePatientService {
 
 	public async execute(
 		nutritionist: Omit<Nutritionist, 'id'>,
-	): Promise<Omit<Nutritionist, 'senha'>> {
-		const { crn, email, nome, senha } = nutritionist;
+	): Promise<Omit<Nutritionist, 'password'>> {
+		const { crn, email, name, password } = nutritionist;
 
-		if (!(crn && email && nome && senha)) {
+		if (!(crn && email && name && password)) {
 			throw new AppError('All fields should be informed');
 		}
 
@@ -29,10 +29,10 @@ class CreatePatientService {
 
 		const newNutritionist = await this.nutritionistRepository.create({
 			...nutritionist,
-			senha: await this.hashProvider.generateHash(senha),
+			password: await this.hashProvider.generateHash(password),
 		});
 
-		const { senha: _, ...nutritionistWithoutPassword } = newNutritionist;
+		const { password: _, ...nutritionistWithoutPassword } = newNutritionist;
 
 		return nutritionistWithoutPassword;
 	}

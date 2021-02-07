@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { paciente as Patient } from '@prisma/client';
+import { Patient } from '@prisma/client';
 import IPatientRepository from '../../repositories/model/IPatientRepository';
 import IHashProvider from '../../providers/HashProvider/models/IHashProvider';
 import AppError from '../../errors/AppError';
@@ -15,38 +15,38 @@ class CreatePatientService {
 
 	public async execute(
 		patient: Omit<Patient, 'id'>,
-	): Promise<Omit<Patient, 'senha'>> {
+	): Promise<Omit<Patient, 'password'>> {
 		const {
-			autorizacao_de_acesso,
-			bairro,
-			cep,
-			cidades_id,
-			complemento,
+			access_authorization,
+			district,
+			zip,
+			city_id,
+			adjunct,
 			cpf,
-			data_nascimento,
+			birthday,
 			email,
-			logradouro,
-			nome,
-			numero,
-			senha,
-			telefone,
+			street,
+			name,
+			number,
+			password,
+			phone,
 		} = patient;
 
 		if (
 			!(
-				autorizacao_de_acesso &&
-				bairro &&
-				cep &&
-				cidades_id &&
-				complemento &&
+				access_authorization &&
+				district &&
+				zip &&
+				city_id &&
+				adjunct &&
 				cpf &&
-				data_nascimento &&
+				birthday &&
 				email &&
-				logradouro &&
-				nome &&
-				numero &&
-				senha &&
-				telefone
+				street &&
+				name &&
+				number &&
+				password &&
+				phone
 			)
 		) {
 			throw new AppError('All fields should be informed');
@@ -59,10 +59,10 @@ class CreatePatientService {
 
 		const newPatient = await this.patientRepository.create({
 			...patient,
-			senha: await this.hashProvider.generateHash(senha),
+			password: await this.hashProvider.generateHash(password),
 		});
 
-		const { senha: _, ...patientWithoutPassword } = newPatient;
+		const { password: _, ...patientWithoutPassword } = newPatient;
 
 		return patientWithoutPassword;
 	}

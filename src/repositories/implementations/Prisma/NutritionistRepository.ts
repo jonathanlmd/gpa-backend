@@ -1,9 +1,5 @@
-import {
-	PrismaClient,
-	Prisma,
-	nutricionista as Nutritionist,
-} from '@prisma/client';
-import { INutritionistRepository } from '../../model/INutritionistRepository';
+import { PrismaClient, Prisma, Nutritionist } from '@prisma/client';
+import INutritionistRepository from '../../model/INutritionistRepository';
 
 export default class NutritionistRepository implements INutritionistRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
@@ -13,13 +9,13 @@ export default class NutritionistRepository implements INutritionistRepository {
 	}
 
 	public async create(nutritionist: Nutritionist): Promise<Nutritionist> {
-		return await this.prismaClient.nutricionista.create({
+		return await this.prismaClient.nutritionist.create({
 			data: nutritionist,
 		});
 	}
 
 	public async findByEmail(email: string): Promise<Nutritionist | null> {
-		return await this.prismaClient.nutricionista.findFirst({
+		return await this.prismaClient.nutritionist.findFirst({
 			where: {
 				email,
 			},

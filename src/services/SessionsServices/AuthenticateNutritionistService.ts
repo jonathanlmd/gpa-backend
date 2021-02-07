@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
-import { nutricionista as Nutritionist } from '@prisma/client';
+import { Nutritionist } from '@prisma/client';
 import authConfig from '../../config/auth';
 import IHashProvider from '../../providers/HashProvider/models/IHashProvider';
 import INutritionistRepository from '../../repositories/model/INutritionistRepository';
@@ -11,7 +11,7 @@ interface IRequestDTO {
 }
 
 interface IResponseDTO {
-	user: Omit<Nutritionist, 'senha'>;
+	user: Omit<Nutritionist, 'password'>;
 	token: string;
 }
 
@@ -36,7 +36,7 @@ class AuthenticateNutritionistService {
 
 		const passwordMatched = await this.hashProvider.compareHash(
 			password,
-			nutritionist.senha,
+			nutritionist.password,
 		);
 
 		if (!passwordMatched) {
@@ -50,7 +50,7 @@ class AuthenticateNutritionistService {
 			expiresIn,
 		});
 
-		const { senha: _, ...nutritionistWithoutPassword } = nutritionist;
+		const { password: _, ...nutritionistWithoutPassword } = nutritionist;
 		return {
 			user: nutritionistWithoutPassword,
 			token,

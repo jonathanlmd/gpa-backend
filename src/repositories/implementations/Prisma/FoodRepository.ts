@@ -1,5 +1,7 @@
-import { alimento as Food, PrismaClient, Prisma } from '@prisma/client';
-import IFoodRepository from '../../model/IFoodRepository';
+import { Food, PrismaClient, Prisma } from '@prisma/client';
+import IFoodRepository, {
+	IFoodUpdateResponse,
+} from '../../model/IFoodRepository';
 
 export default class FoodRepository implements IFoodRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
@@ -9,7 +11,7 @@ export default class FoodRepository implements IFoodRepository {
 	}
 
 	public async create(food: Omit<Food, 'id'>): Promise<Food> {
-		return await this.prismaClient.alimento.create({
+		return await this.prismaClient.food.create({
 			data: {
 				...food,
 			},
@@ -18,7 +20,7 @@ export default class FoodRepository implements IFoodRepository {
 
 	public async update(food: Food): Promise<IFoodUpdateResponse> {
 		const { id, ...food_ } = food;
-		return await this.prismaClient.alimento.update({
+		return await this.prismaClient.food.update({
 			data: {
 				...food_,
 			},
@@ -26,25 +28,28 @@ export default class FoodRepository implements IFoodRepository {
 				id,
 			},
 			include: {
-				substitutos_alimentoTosubstitutos_alimento_id: true,
+				substitutions: true,
 			},
 		});
 	}
 
 	public async findById(id: number): Promise<Food | null> {
-		return await this.prismaClient.alimento.findFirst({
+		return await this.prismaClient.food.findFirst({
 			where: {
 				id,
+			},
+			include: {
+				substitutions: true,
 			},
 		});
 	}
 
 	public async getAll(): Promise<Food[]> {
-		return await this.prismaClient.alimento.findMany();
+		return await this.prismaClient.food.findMany();
 	}
 
 	public async delete(id: number): Promise<Food> {
-		return await this.prismaClient.alimento.delete({
+		return await this.prismaClient.food.delete({
 			where: {
 				id,
 			},

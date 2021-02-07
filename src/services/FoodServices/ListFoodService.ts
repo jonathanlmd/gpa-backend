@@ -1,4 +1,4 @@
-import { alimento as Food } from '@prisma/client';
+import { Food } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 import IFoodRepository from '../../repositories/model/IFoodRepository';
 

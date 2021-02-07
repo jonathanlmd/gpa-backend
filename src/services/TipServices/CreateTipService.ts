@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { dica as Tip } from '@prisma/client';
+import { Tip } from '@prisma/client';
 import ITipRepository from '../../repositories/model/ITipRepository';
 import AppError from '../../errors/AppError';
 
@@ -11,9 +11,9 @@ class CreateTipService {
 	) {}
 
 	public async execute(tip: Omit<Tip, 'id'>): Promise<Tip> {
-		const { conteudo, data, nutricionista_id } = tip;
+		const { content, date, nutritionist_id } = tip;
 
-		if (!(conteudo && data && nutricionista_id)) {
+		if (!(content && date && nutritionist_id)) {
 			throw new AppError('All fields should be informed');
 		}
 

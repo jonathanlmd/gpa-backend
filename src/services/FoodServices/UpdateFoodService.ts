@@ -1,4 +1,4 @@
-import { alimento as Food, substitutos as Substitutions } from '@prisma/client';
+import { Food, Substitution } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 import ISubstitutionRepository from '../../repositories/model/ISubstitutionRepository';
 import AppError from '../../errors/AppError';
@@ -6,10 +6,10 @@ import IFoodRepository from '../../repositories/model/IFoodRepository';
 
 interface IRequest {
 	id: number;
-	medida?: number;
-	caloria?: number;
-	nome?: string;
-	unindade: string;
+	measure?: number;
+	calories?: number;
+	name?: string;
+	unity: string;
 	substitutions?: Array<{
 		id: number;
 		measure: number;
@@ -17,7 +17,7 @@ interface IRequest {
 	}>;
 }
 interface IResponse extends Food {
-	substitutions: Array<Substitutions>;
+	substitutions: Array<Substitution>;
 }
 
 @injectable()
@@ -31,10 +31,10 @@ class UpdateFoodService {
 
 	public async execute({
 		id,
-		medida,
-		caloria,
-		nome,
-		unindade,
+		measure,
+		calories,
+		name,
+		unity,
 		substitutions,
 	}: IRequest): Promise<IResponse> {
 		const food = await this.foodsRepository.findById(id);
@@ -42,7 +42,7 @@ class UpdateFoodService {
 			throw new AppError('Food not found');
 		}
 
-		if (!(medida && caloria && nome && unindade)) {
+		if (!(measure && calories && name && unity)) {
 			throw new AppError('All fields should be informed');
 		}
 		if (substitutions) {
@@ -51,31 +51,33 @@ class UpdateFoodService {
 			await Promise.allSettled(
 				substitutions
 					.filter(subs => subs.id !== food.id)
-					.map(async ({ id: substitution_id, measure, description }) => {
-						return await this.substitutionRepository.create({
-							alimento_id: id,
-							alimento_substituto_id: substitution_id,
-							descricao: description,
-							medida: measure,
-						});
-					}),
+					.map(
+						async ({ id: substitution_id, measure: measure_, description }) => {
+							return await this.substitutionRepository.create({
+								food_id: id,
+								food_substitution_id: substitution_id,
+								description,
+								measure: measure_,
+							});
+						},
+					),
 			);
 		}
 
 		const {
-			substitutos_alimentoTosubstitutos_alimento_id,
+			substitutions: substitutions_,
 			...rest
 		} = await this.foodsRepository.update({
 			id,
-			medida,
-			caloria,
-			nome,
-			unindade,
+			measure,
+			calories,
+			name,
+			unity,
 		});
 
 		return {
 			...rest,
-			substitutions: substitutos_alimentoTosubstitutos_alimento_id,
+			substitutions: substitutions_,
 		};
 	}
 }

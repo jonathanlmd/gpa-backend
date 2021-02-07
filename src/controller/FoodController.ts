@@ -15,10 +15,10 @@ export default class FoodController {
 		const createFoodService = await container.resolve(CreateFoodService);
 
 		const food = await createFoodService.execute({
-			nome: name,
-			medida: measure,
-			caloria: calories,
-			unindade: unity,
+			name,
+			measure,
+			calories,
+			unity,
 			substitutions,
 		});
 
@@ -32,10 +32,10 @@ export default class FoodController {
 
 		const updatedFood = await updateFoodService.execute({
 			id,
-			unindade: unity,
-			caloria: calories,
-			medida: measure,
-			nome: name,
+			unity,
+			calories,
+			measure,
+			name,
 			substitutions,
 		});
 

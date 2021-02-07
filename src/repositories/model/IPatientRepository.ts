@@ -1,20 +1,20 @@
-import { paciente as Patient } from '@prisma/client';
+import { Patient } from '@prisma/client';
 
 interface IPatientUpdate {
 	id: number;
-	autorizacao_de_acesso?: number;
+	access_authorization?: number;
 	cpf?: string;
-	telefone?: string | null;
-	nome?: string;
+	phone?: string | null;
+	name?: string;
 	email?: string;
-	senha?: string;
-	data_nascimento?: Date;
-	cidades_id?: number;
-	bairro?: string;
-	logradouro?: string;
-	cep?: number;
-	numero?: number;
-	complemento?: string;
+	password?: string;
+	birthday?: Date;
+	city_id?: number;
+	district?: string;
+	street?: string;
+	zip?: number;
+	number?: number;
+	adjunct?: string;
 }
 
 export default interface IPatientRepository {
@@ -22,6 +22,6 @@ export default interface IPatientRepository {
 	delete(id: number): Promise<Patient>;
 	findByEmail(email: string): Promise<Patient | null>;
 	findById(id: number): Promise<Patient | null>;
-	getAll(): Promise<Omit<Patient, 'senha'>[]>;
-	update(patient: IPatientUpdate): Promise<Omit<Patient, 'senha'>>;
+	getAll(): Promise<Omit<Patient, 'password'>[]>;
+	update(patient: IPatientUpdate): Promise<Omit<Patient, 'password'>>;
 }

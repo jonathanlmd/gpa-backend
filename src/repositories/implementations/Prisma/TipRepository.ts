@@ -1,4 +1,4 @@
-import { dica as Tip, PrismaClient, Prisma } from '@prisma/client';
+import { Tip, PrismaClient, Prisma } from '@prisma/client';
 import ITipRepository from '../../model/ITipRepository';
 
 export default class TipRepository implements ITipRepository {
@@ -9,12 +9,12 @@ export default class TipRepository implements ITipRepository {
 	}
 
 	public async create(tip: Omit<Tip, 'id'>): Promise<Tip> {
-		const { nutricionista_id, ...tip_ } = tip;
-		return await this.prismaClient.dica.create({
+		const { nutritionist_id, ...tip_ } = tip;
+		return await this.prismaClient.tip.create({
 			data: {
-				nutricionista: {
+				nutritionist: {
 					connect: {
-						id: nutricionista_id,
+						id: nutritionist_id,
 					},
 				},
 				...tip_,
@@ -23,15 +23,15 @@ export default class TipRepository implements ITipRepository {
 	}
 
 	public async update(tip: Tip): Promise<Tip> {
-		const { id, nutricionista_id, ...tip_ } = tip;
-		return await this.prismaClient.dica.update({
+		const { id, nutritionist_id, ...tip_ } = tip;
+		return await this.prismaClient.tip.update({
 			data: {
 				...tip_,
-				...(nutricionista_id
+				...(nutritionist_id
 					? {
-							nutricionista: {
+							nutritionist: {
 								connect: {
-									id: nutricionista_id,
+									id: nutritionist_id,
 								},
 							},
 					  }
@@ -44,7 +44,7 @@ export default class TipRepository implements ITipRepository {
 	}
 
 	public async findById(id: number): Promise<Tip | null> {
-		return await this.prismaClient.dica.findFirst({
+		return await this.prismaClient.tip.findFirst({
 			where: {
 				id,
 			},
@@ -52,11 +52,11 @@ export default class TipRepository implements ITipRepository {
 	}
 
 	public async getAll(): Promise<Tip[]> {
-		return await this.prismaClient.dica.findMany();
+		return await this.prismaClient.tip.findMany();
 	}
 
 	public async delete(id: number): Promise<Tip> {
-		return await this.prismaClient.dica.delete({
+		return await this.prismaClient.tip.delete({
 			where: {
 				id,
 			},

@@ -1,14 +1,14 @@
-import { alimento as Food, substitutos as Substitutions } from '@prisma/client';
+import { Food, Substitution } from '@prisma/client';
 
 interface IFoodUpdate {
 	id: number;
-	medida?: number;
-	caloria?: number;
-	nome?: string;
-	unindade: string;
+	measure?: number;
+	calories?: number;
+	name?: string;
+	unity: string;
 }
 export interface IFoodUpdateResponse extends Food {
-	substitutos_alimentoTosubstitutos_alimento_id: Substitutions[];
+	substitutions: Substitution[];
 }
 
 export default interface IFoodRepository {

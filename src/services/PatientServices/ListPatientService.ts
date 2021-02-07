@@ -1,4 +1,4 @@
-import { paciente as Patient } from '@prisma/client';
+import { Patient } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 import IPatientRepository from '../../repositories/model/IPatientRepository';
 

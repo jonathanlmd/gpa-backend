@@ -1,4 +1,4 @@
-import { nutricionista as Nutritionist } from '@prisma/client';
+import { Nutritionist } from '@prisma/client';
 
 export default interface INutritionistRepository {
 	create(nutritionist: Omit<Nutritionist, 'id'>): Promise<Nutritionist>;

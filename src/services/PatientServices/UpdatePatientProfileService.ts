@@ -1,4 +1,4 @@
-import { paciente as Patient } from '@prisma/client';
+import { Patient } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 import IHashProvider from '../../providers/HashProvider/models/IHashProvider';
 import AppError from '../../errors/AppError';
@@ -7,19 +7,19 @@ import IPatientRepository from '../../repositories/model/IPatientRepository';
 interface IRequest {
 	id: number;
 	email?: string;
-	senha?: string;
-	senha_antiga?: string;
-	data_nascimento?: Date;
-	autorizacao_de_acesso?: number;
+	password?: string;
+	old_password?: string;
+	birthday?: Date;
+	access_authorization?: number;
 	cpf?: string;
-	numero?: number;
-	nome?: string;
-	bairro?: string;
-	complemento?: string;
-	logradouro?: string;
-	cep?: number;
-	cidades_id?: number;
-	telefone?: string;
+	number?: number;
+	name?: string;
+	district?: string;
+	adjunct?: string;
+	street?: string;
+	zip?: number;
+	city_id?: number;
+	phone?: string;
 }
 
 @injectable()
@@ -33,21 +33,21 @@ class UpdatePatientProfileService {
 
 	public async execute({
 		id,
-		nome,
+		name,
 		email,
-		autorizacao_de_acesso,
-		bairro,
-		cep,
-		cidades_id,
-		complemento,
+		access_authorization,
+		district,
+		zip,
+		city_id,
+		adjunct,
 		cpf,
-		data_nascimento,
-		logradouro,
-		numero,
-		senha,
-		senha_antiga,
-		telefone,
-	}: IRequest): Promise<Omit<Patient, 'senha'>> {
+		birthday,
+		street,
+		number,
+		password,
+		old_password,
+		phone,
+	}: IRequest): Promise<Omit<Patient, 'password'>> {
 		const patient = await this.patientsRepository.findById(id);
 		if (!patient) {
 			throw new AppError('Patient not found');
@@ -63,7 +63,7 @@ class UpdatePatientProfileService {
 			}
 		}
 
-		if (senha && !senha_antiga) {
+		if (password && !old_password) {
 			throw new AppError(
 				'You need  to inform the old password to set a new password',
 			);
@@ -71,33 +71,33 @@ class UpdatePatientProfileService {
 
 		let newPassword;
 
-		if (senha && senha_antiga) {
+		if (password && old_password) {
 			const checkOldPassword = await this.hashProvider.compareHash(
-				senha_antiga,
-				patient.senha,
+				old_password,
+				patient.password,
 			);
 
 			if (!checkOldPassword) {
 				throw new AppError('Old password does not match');
 			}
-			newPassword = await this.hashProvider.generateHash(senha);
+			newPassword = await this.hashProvider.generateHash(password);
 		}
 
 		return this.patientsRepository.update({
 			id,
-			nome,
+			name,
 			email,
-			autorizacao_de_acesso,
-			bairro,
-			cep,
-			cidades_id,
-			complemento,
+			access_authorization,
+			district,
+			zip,
+			city_id,
+			adjunct,
 			cpf,
-			data_nascimento,
-			logradouro,
-			numero,
-			senha: newPassword,
-			telefone,
+			birthday,
+			street,
+			number,
+			password: newPassword,
+			phone,
 		});
 	}
 }

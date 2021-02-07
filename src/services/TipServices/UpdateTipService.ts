@@ -1,13 +1,13 @@
-import { dica as Tip } from '@prisma/client';
+import { Tip } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 import AppError from '../../errors/AppError';
 import ITipRepository from '../../repositories/model/ITipRepository';
 
 interface IRequest {
 	id: number;
-	conteudo: string;
-	data: Date;
-	nutricionista_id: number;
+	content: string;
+	date: Date;
+	nutritionist_id: number;
 }
 
 @injectable()
@@ -19,24 +19,24 @@ class UpdateTipService {
 
 	public async execute({
 		id,
-		conteudo,
-		data,
-		nutricionista_id,
+		content,
+		date,
+		nutritionist_id,
 	}: IRequest): Promise<Tip> {
 		const tip = await this.tipsRepository.findById(id);
 		if (!tip) {
 			throw new AppError('Tip not found');
 		}
 
-		if (!(id && conteudo && data && nutricionista_id)) {
+		if (!(id && content && date && nutritionist_id)) {
 			throw new AppError('All fields should be informed');
 		}
 
 		return this.tipsRepository.update({
 			id,
-			conteudo,
-			data,
-			nutricionista_id,
+			content,
+			date,
+			nutritionist_id,
 		});
 	}
 }

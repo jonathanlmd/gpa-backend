@@ -1,4 +1,4 @@
-import { dica as Tip } from '@prisma/client';
+import { Tip } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 import ITipRepository from '../../repositories/model/ITipRepository';
 import AppError from '../../errors/AppError';

@@ -1,8 +1,7 @@
 import { container } from 'tsyringe';
 import SubstitutionRepository from '../repositories/implementations/Prisma/SubstitutionRepository';
 import ISubstitutionRepository from '../repositories/model/ISubstitutionRepository';
-import INewRepository from '../repositories/model/INewRepository';
-import NewRepository from '../repositories/implementations/Prisma/NewRepository';
+import NewsRepository from '../repositories/implementations/Prisma/NewsRepository';
 import IFoodRepository from '../repositories/model/IFoodRepository';
 import FoodRepository from '../repositories/implementations/Prisma/FoodRepository';
 import INutritionistRepository from '../repositories/model/INutritionistRepository';
@@ -13,6 +12,7 @@ import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import BCryptHashProvider from '../providers/HashProvider/implementations/BCryptHashProvider';
 import ITipRepository from '../repositories/model/ITipRepository';
 import TipRepository from '../repositories/implementations/Prisma/TipRepository';
+import INewsRepository from '../repositories/model/INewsRepository';
 
 container.registerSingleton<IPatientRepository>(
 	'PatientRepository',
@@ -24,7 +24,7 @@ container.registerSingleton<INutritionistRepository>(
 );
 container.registerSingleton<IFoodRepository>('FoodRepository', FoodRepository);
 container.registerSingleton<ITipRepository>('TipRepository', TipRepository);
-container.registerSingleton<INewRepository>('NewRepository', NewRepository);
+container.registerSingleton<INewsRepository>('NewsRepository', NewsRepository);
 container.registerSingleton<ISubstitutionRepository>(
 	'SubstitutionRepository',
 	SubstitutionRepository,
