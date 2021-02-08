@@ -207,7 +207,7 @@ model State {
 
 model Meal {
   id                     Int                      @id @default(autoincrement())
-  nome                   String										@map("nome")
+  name                   String										@map("nome")
   eating_plan_id     		 Int											@map("plano_alimentar_id")
   observations           String?                  @map("observacoes")
   eating_plan        		 EatingPlan         			@relation(fields: [eating_plan_id], references: [id])

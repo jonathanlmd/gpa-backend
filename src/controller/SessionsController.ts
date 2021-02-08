@@ -1,39 +1,21 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import {
-	AuthenticateNutritionistService,
-	AuthenticatePatientService,
-} from '../services/SessionsServices';
+import { AuthenticateService } from '../services/SessionsServices';
 
 export default class SessionsController {
-	async patientLogin(request: Request, response: Response): Promise<Response> {
+	async login(request: Request, response: Response): Promise<Response> {
 		const { email, password } = request.body;
-		const authenticatePatientService = await container.resolve(
-			AuthenticatePatientService,
-		);
+		const authenticateService = await container.resolve(AuthenticateService);
 
-		const { user, token } = await authenticatePatientService.execute({
+		const {
+			user: { password: _, ...user },
+			token,
+			role,
+		} = await authenticateService.execute({
 			email,
 			password,
 		});
 
-		return response.json({ user, token });
-	}
-
-	async nutritionistLogin(
-		request: Request,
-		response: Response,
-	): Promise<Response> {
-		const { email, password } = request.body;
-		const authenticateNutritionistService = await container.resolve(
-			AuthenticateNutritionistService,
-		);
-
-		const { user, token } = await authenticateNutritionistService.execute({
-			email,
-			password,
-		});
-
-		return response.json({ user, token });
+		return response.json({ user, token, role });
 	}
 }

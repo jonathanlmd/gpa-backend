@@ -1,4 +1,6 @@
 import { container } from 'tsyringe';
+import IMealHasFoodRepository from '../repositories/model/IMealHasFoodRepository';
+import MealHasFoodRepository from '../repositories/implementations/Prisma/MealHasFoodRepository';
 import SubstitutionRepository from '../repositories/implementations/Prisma/SubstitutionRepository';
 import ISubstitutionRepository from '../repositories/model/ISubstitutionRepository';
 import NewsRepository from '../repositories/implementations/Prisma/NewsRepository';
@@ -25,6 +27,10 @@ container.registerSingleton<INutritionistRepository>(
 container.registerSingleton<IFoodRepository>('FoodRepository', FoodRepository);
 container.registerSingleton<ITipRepository>('TipRepository', TipRepository);
 container.registerSingleton<INewsRepository>('NewsRepository', NewsRepository);
+container.registerSingleton<IMealHasFoodRepository>(
+	'MealHasFoodRepository',
+	MealHasFoodRepository,
+);
 container.registerSingleton<ISubstitutionRepository>(
 	'SubstitutionRepository',
 	SubstitutionRepository,

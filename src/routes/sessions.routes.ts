@@ -5,7 +5,6 @@ const sessionsRoutes = Router();
 
 const sessionsController = new SessionsController();
 
-sessionsRoutes.post('/patient', sessionsController.patientLogin);
-sessionsRoutes.post('/nutritionist', sessionsController.nutritionistLogin);
+sessionsRoutes.post('/', sessionsController.login);
 
 export default sessionsRoutes;
