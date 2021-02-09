@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 import { MealHasFood } from '@prisma/client';
-import IMealRepository from 'repositories/model/IMealRepository';
-import IMealHasFoodRepository from 'repositories/model/IMealHasFoodRepository';
-import IFoodRepository from 'repositories/model/IFoodRepository';
+import IFoodRepository from '../../repositories/model/IFoodRepository';
+import IMealRepository from '../../repositories/model/IMealRepository';
+import IMealHasFoodRepository from '../../repositories/model/IMealHasFoodRepository';
 import AppError from '../../errors/AppError';
 
 @injectable()

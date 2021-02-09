@@ -1,6 +1,7 @@
 import { EatingPlan, PrismaClient, Prisma } from '@prisma/client';
 import IEatingPlanRepository, {
 	IEatingPlanUpdate,
+	IResponseGet,
 } from '../../model/IEatingPlanRepository';
 
 export default class EatingPlanRepository implements IEatingPlanRepository {
@@ -31,10 +32,21 @@ export default class EatingPlanRepository implements IEatingPlanRepository {
 		});
 	}
 
-	public async getById(id: number): Promise<EatingPlan | null> {
+	public async getById(id: number): Promise<IResponseGet | null> {
 		return await this.prismaClient.eatingPlan.findFirst({
 			where: {
 				id,
+			},
+			include: {
+				meal: {
+					include: {
+						meal_has_food: {
+							include: {
+								food: true,
+							},
+						},
+					},
+				},
 			},
 		});
 	}

@@ -58,7 +58,7 @@ class AuthenticatePatientService {
 
 		const { secret, expiresIn } = authConfig.jwt;
 
-		const token = sign({}, secret, {
+		const token = sign({ id: user.id, role }, secret, {
 			subject: user.id.toString(),
 			expiresIn,
 		});

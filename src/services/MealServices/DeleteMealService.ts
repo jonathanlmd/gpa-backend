@@ -1,7 +1,7 @@
 import { Food, Meal } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
-import IMealRepository from 'repositories/model/IMealRepository';
-import IMealHasFoodRepository from 'repositories/model/IMealHasFoodRepository';
+import IMealRepository from '../../repositories/model/IMealRepository';
+import IMealHasFoodRepository from '../../repositories/model/IMealHasFoodRepository';
 import AppError from '../../errors/AppError';
 
 interface IRequest {

@@ -1,6 +1,8 @@
 import { EatingPlan } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
-import IEatingPlanRepository from 'repositories/model/IEatingPlanRepository';
+import IMealHasFoodRepository from '../../repositories/model/IMealHasFoodRepository';
+import IEatingPlanRepository from '../../repositories/model/IEatingPlanRepository';
+import IMealRepository from '../../repositories/model/IMealRepository';
 import AppError from '../../errors/AppError';
 
 interface IRequest {
@@ -11,6 +13,10 @@ class DeleteEatingPlanService {
 	constructor(
 		@inject('EatingPlanRepository')
 		private eatingPlanRepository: IEatingPlanRepository,
+		@inject('MealRepository')
+		private mealRepository: IMealRepository,
+		@inject('MealHasFoodRepository')
+		private mealHasFoodRepository: IMealHasFoodRepository,
 	) {}
 
 	public async execute({ id }: IRequest): Promise<EatingPlan> {
@@ -18,6 +24,14 @@ class DeleteEatingPlanService {
 		if (!isValidEatingPlan) {
 			throw new AppError('Eating Plan not found');
 		}
+
+		await Promise.allSettled(
+			isValidEatingPlan.meal.map(async ({ id: meal_id }) => {
+				return await this.mealHasFoodRepository.deleteByMeal(meal_id);
+			}),
+		);
+
+		await this.mealRepository.deleteByEatingPlan(isValidEatingPlan.id);
 
 		return await this.eatingPlanRepository.deleteById(isValidEatingPlan.id);
 	}
