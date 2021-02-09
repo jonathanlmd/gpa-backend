@@ -14,7 +14,7 @@ export interface IMealHasFoodIds {
 
 export default interface IMealHasFoodRepository {
 	create(mealHasFood: MealHasFood): Promise<MealHasFood>;
-	deleteByMeal(food_id: number): Promise<MealHasFood>;
+	deleteByMeal(meal_id: number): Promise<MealHasFood>;
 	findByIds(ids: IMealHasFoodIds): Promise<MealHasFood | null>;
 	getByFood(food_id: number): Promise<MealHasFood[]>;
 	getByMeal(mealHasFood_id: number): Promise<MealHasFood[]>;

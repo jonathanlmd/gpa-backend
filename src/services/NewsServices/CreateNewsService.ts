@@ -11,19 +11,10 @@ class CreateNewsService {
 	) {}
 
 	public async execute(news_: Omit<News, 'id'>): Promise<News> {
-		const {
-			title,
-			link,
-			description,
-			date,
-			nutritionist_id,
-			image_link,
-		} = news_;
+		const { title, description, date, nutritionist_id } = news_;
 
-		if (
-			!(title && link && description && date && nutritionist_id && image_link)
-		) {
-			throw new AppError('All fields should be informed');
+		if (!(title && description && date && nutritionist_id)) {
+			throw new AppError('Some fields are required');
 		}
 
 		return await this.newsRepository.create({

@@ -9,8 +9,9 @@ export interface IMealUpdate {
 
 export default interface IMealRepository {
 	create(meal: Omit<Meal, 'id'>): Promise<Meal>;
-	deleteByEatingPlan(meal_id: number): Promise<Meal>;
-	deleteById(meal_id: number): Promise<Meal>;
+	deleteByEatingPlan(eating_plan_id: number): Promise<Meal>;
+	deleteById(id: number): Promise<Meal>;
+	findById(id: number): Promise<Meal | null>;
 	getByEatingPlan(eating_plan_id: number): Promise<Meal[]>;
 	update(meal: IMealUpdate): Promise<Meal>;
 }

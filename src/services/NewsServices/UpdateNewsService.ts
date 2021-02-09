@@ -37,18 +37,7 @@ class UpdateNewsService {
 			throw new AppError('News not found');
 		}
 
-		console.log({
-			id,
-			description,
-			image_link,
-			subtitle,
-			link,
-			title,
-			date,
-			nutritionist_id,
-		});
-
-		if (!(id && link && title && date && nutritionist_id && subtitle)) {
+		if (!(id && title && description && date && nutritionist_id)) {
 			throw new AppError('All fields should be informed');
 		}
 

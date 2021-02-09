@@ -52,4 +52,12 @@ export default class MealRepository implements IMealRepository {
 			},
 		});
 	}
+
+	public async findById(id: number): Promise<Meal | null> {
+		return await this.prismaClient.meal.findFirst({
+			where: {
+				id,
+			},
+		});
+	}
 }
