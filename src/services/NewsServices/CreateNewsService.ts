@@ -19,6 +19,7 @@ class CreateNewsService {
 
 		return await this.newsRepository.create({
 			...news_,
+			date: new Date(news_.date),
 		});
 	}
 }

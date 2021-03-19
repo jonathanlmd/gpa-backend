@@ -12,11 +12,7 @@ export default class NewRepository implements INewsRepository {
 		const { nutritionist_id, ...news_ } = news;
 		return await this.prismaClient.news.create({
 			data: {
-				nutritionist: {
-					connect: {
-						id: nutritionist_id,
-					},
-				},
+				nutritionist_id,
 				...news_,
 			},
 		});

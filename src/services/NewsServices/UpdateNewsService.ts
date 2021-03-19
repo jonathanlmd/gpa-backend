@@ -48,7 +48,7 @@ class UpdateNewsService {
 			link,
 			subtitle,
 			title,
-			date,
+			date: new Date(date),
 			nutritionist_id,
 		});
 	}
