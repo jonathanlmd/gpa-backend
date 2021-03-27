@@ -13,6 +13,7 @@ export default interface IEatingPlanRepository {
 	create(eating_plan: Omit<EatingPlan, 'id'>): Promise<EatingPlan>;
 	deleteById(id: number): Promise<EatingPlan>;
 	getById(id: number): Promise<IResponseGet | null>;
+	// getByPatientId(id: number): Promise<IResponseGet | null>;
 	getAll(): Promise<EatingPlan[]>;
 	update(eating_plan: IEatingPlanUpdate): Promise<EatingPlan>;
 }

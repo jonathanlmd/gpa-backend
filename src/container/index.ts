@@ -1,7 +1,10 @@
 import './food.container';
 import './meal.container';
 import './user.container';
+import './anthropometricdata.container';
 import './news.container';
 import './tip.container';
 import './eatingPlan.container';
 import './providers.container';
+import './anamnesis.container';
+import './schedule.container';

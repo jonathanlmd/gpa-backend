@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["createMany"]
 }
 
 datasource db {
@@ -8,225 +9,222 @@ datasource db {
 }
 
 model Appointment {
-  id               Int           	@id @default(autoincrement())
-  date             DateTime      	@unique @map("data")
-  patient_id       Int					 	@map("paciente_id")
-  nutritionist_id  Int					 	@map("nutricionista_id")
+  id              Int          @id @default(autoincrement())
+  date            DateTime     @unique @map("data")
+  patient_id      Int          @map("paciente_id")
+  nutritionist_id Int          @map("nutricionista_id")
   /// This field's default value can currently not be parsed: `b'0'`.
-  acept            Int           	@default(dbgenerated()) @map("aceito")
-  nutritionist     Nutritionist  	@relation(fields: [nutritionist_id], references: [id])
-  patient          Patient       	@relation(fields: [patient_id], references: [id])
-  consultation     Consultation[]
+  acept           Int          @default(dbgenerated()) @map("aceito")
+  nutritionist    Nutritionist @relation(fields: [nutritionist_id], references: [id])
+  patient         Patient      @relation(fields: [patient_id], references: [id])
+  schedule        Schedule[]
 
   @@index([nutritionist_id], name: "fk_agendamento_nutricionista1_idx")
   @@index([patient_id], name: "fk_agendamento_paciente1_idx")
-	@@map(name: "agendamento")
+  @@map(name: "agendamento")
 }
 
 model Food {
-  id                     Int                      	@id @default(autoincrement())
-  measure                Float											@map("medida")
-  name                   String											@map("nome")
-  unity                  String											@map("unidade")
-  calories               Float											@map("caloria")
-  meal_has_food          MealHasFood[]
-  substitutions				   Substitution[]             @relation("alimentoTosubstituto_alimento_id")
-  is_substitution_for		 Substitution[]             @relation("alimentoTosubstituto_alimento_substituto_id")
+  id                  Int            @id @default(autoincrement())
+  measure             Float          @map("medida")
+  name                String         @map("nome")
+  unity               String         @map("unidade")
+  calories            Float          @map("caloria")
+  meal_has_food       MealHasFood[]
+  substitutions       Substitution[] @relation("alimentoTosubstituto_alimento_id")
+  is_substitution_for Substitution[] @relation("alimentoTosubstituto_alimento_substituto_id")
 
-	@@map(name: "alimento")
+  @@map(name: "alimento")
 }
 
 model Anamnesis {
-  id                    		 	Int                     			@id @default(autoincrement())
-  description           		 	String?												@map("descricao")
-  type                  		 	String?												@map("tipo")
-  dangerousness         		 	String?												@map("periculosidade")
-  anamnesis_has_consultation 	AnamnesisHasConsultation[]
+  id                     Int                    @id @default(autoincrement())
+  description            String?                @map("descricao")
+  type                   String?                @map("tipo")
+  dangerousness          String?                @map("periculosidade")
+  anamnesis_has_schedule AnamnesisHasSchedule[]
 
-	@@map(name: "anamnese")
+  @@map(name: "anamnese")
 }
 
-model AnamnesisHasConsultation {
-  anamnesis_id 			Int      			@default(autoincrement()) @map("anamnese_id")
-  consultation_id 	Int						@map("consulta_id")
-  anamnesis    			Anamnesis 		@relation(fields: [anamnesis_id], references: [id])
-  consultation    	Consultation 	@relation(fields: [consultation_id], references: [id])
+model AnamnesisHasSchedule {
+  anamnesis_id Int       @default(autoincrement()) @map("anamnese_id")
+  schedule_id  Int       @map("consulta_id")
+  anamnesis    Anamnesis @relation(fields: [anamnesis_id], references: [id])
+  schedule     Schedule  @relation(fields: [schedule_id], references: [id])
 
-  @@id([anamnesis_id, consultation_id])
+  @@id([anamnesis_id, schedule_id])
   @@index([anamnesis_id], name: "fk_anamnese_has_consulta_anamnese1_idx")
-  @@index([consultation_id], name: "fk_anamnese_has_consulta_consulta1_idx")
-	@@map(name: "anamnese_has_consulta")
+  @@index([schedule_id], name: "fk_anamnese_has_consulta_consulta1_idx")
+  @@map(name: "anamnese_has_consulta")
 }
 
-model Consultation {
-  id                     			Int                     			@id @default(autoincrement())
-  value                  			Float									 				@map("valor")
-  date                   			DateTime								 			@map("data")
-  patient_id             			Int										 				@map("paciente_id")
-  appointment_id         			Int										 				@map("agendamento_id")
-  eating_plan_id      	 			Int										 				@map("plano_alimentar_id")
-  anthropometric_data_id 			Int										 				@map("dados_antropometricos_id")
-  observation            			String?								 				@map("observacoes")
-  appointment            			Appointment             			@relation(fields: [appointment_id], references: [id])
-  anthropometric_data    			AnthropometricData     			@relation(fields: [anthropometric_data_id], references: [id])
-  patient	               			Patient                 			@relation(fields: [patient_id], references: [id])
-  eating_plan        		 			EatingPlan		         				@relation(fields: [eating_plan_id], references: [id])
-  anamnesis_has_consultation  AnamnesisHasConsultation[]
+model Schedule {
+  id                     Int                    @id @default(autoincrement())
+  value                  Float                  @map("valor")
+  date                   DateTime               @map("data")
+  patient_id             Int                    @map("paciente_id")
+  appointment_id         Int?                   @map("agendamento_id")
+  eating_plan_id         Int?                   @map("plano_alimentar_id")
+  anthropometric_data_id Int                    @map("dados_antropometricos_id")
+  observation            String?                @map("observacoes")
+  appointment            Appointment?           @relation(fields: [appointment_id], references: [id])
+  anthropometric_data    AnthropometricData     @relation(fields: [anthropometric_data_id], references: [id])
+  patient                Patient                @relation(fields: [patient_id], references: [id])
+  eating_plan            EatingPlan?            @relation(fields: [eating_plan_id], references: [id])
+  anamnesis_has_schedule AnamnesisHasSchedule[]
 
   @@index([appointment_id], name: "fk_consulta_agendamento1_idx")
   @@index([anthropometric_data_id], name: "fk_consulta_dados_antropometricos1_idx")
   @@index([patient_id], name: "fk_consulta_paciente1_idx")
   @@index([eating_plan_id], name: "fk_consulta_plano_alimentar1_idx")
-	@@map(name: "consulta")
+  @@map(name: "consulta")
 }
 
 model Tip {
-  id              	Int            @id @default(autoincrement())
-  content         	String				 @map("conteudo")
-  date            	DateTime			 @map("data")
-  nutritionist_id 	Int					 	 @map("nutricionista_id")
-  nutritionist    	Nutritionist 	 @relation(fields: [nutritionist_id], references: [id])
+  id              Int          @id @default(autoincrement())
+  content         String       @map("conteudo")
+  date            DateTime     @map("data")
+  nutritionist_id Int          @map("nutricionista_id")
+  nutritionist    Nutritionist @relation(fields: [nutritionist_id], references: [id])
 
   @@index([nutritionist_id], name: "fk_dica_nutricionista_idx")
-	@@map(name: "dica")
+  @@map(name: "dica")
 }
 
 model News {
-  id               	Int           	@id @default(autoincrement())
-  title            	String					@map("titulo")
-  link             	String?			  	@map("link")
-	description      	String?       	@map("descricao")
-  date             	DateTime				@map("data")
-  nutritionist_id  	Int					 		@map("nutricionista_id")
-  image_link       	String?			  	@map("imagem_link")
-  subtitle        	String?					@map("subtitulo")
-  nutritionist    	Nutritionist    @relation(fields: [nutritionist_id], references: [id])
+  id              Int          @id @default(autoincrement())
+  title           String       @map("titulo")
+  link            String?      @map("link")
+  description     String?      @map("descricao")
+  date            DateTime     @map("data")
+  nutritionist_id Int          @map("nutricionista_id")
+  image_link      String?      @map("imagem_link")
+  subtitle        String?      @map("subtitulo")
+  nutritionist    Nutritionist @relation(fields: [nutritionist_id], references: [id])
 
   @@index([nutritionist_id], name: "fk_noticia_nutricionista_idx")
-	@@map(name: "noticia")
+  @@map(name: "noticia")
 }
 
 model Nutritionist {
-  id          	Int           	@id @default(autoincrement())
-  crn         	String					@map("crn")
-  password    	String					@map("senha")
-  email       	String
-  name        	String					@map("nome")
-  appointment 	Appointment[]
-  tip        		Tip[]
-  news     			News[]
+  id          Int           @id @default(autoincrement())
+  crn         String        @map("crn")
+  password    String        @map("senha")
+  email       String
+  name        String        @map("nome")
+  appointment Appointment[]
+  tip         Tip[]
+  news        News[]
 
-	@@map(name: "nutricionista")
+  @@map(name: "nutricionista")
 }
 
 model Patient {
-  id                    Int           @id @default(autoincrement())
-  access_authorization  Int						@map("autorizacao_de_acesso")
-  cpf                   String
-  phone		              String?				@map("telefone")
-  name                  String				@map("nome")
-  email                 String
-  password              String  			@map("senha")
-  birthday			        DateTime			@map("data_nascimento")
-  city_id		            Int						@map("cidades_id")
-  district              String				@map("bairro")
-  street		            String				@map("logradouro")
-  zip                   Int						@map("cep")
-  number                Int						@map("numero")
-  adjunct		            String				@map("complemento")
-  city	                City	        @relation(fields: [city_id], references: [id])
-  appointment           Appointment[]
-  consultation          Consultation[]
+  id                   Int           @id @default(autoincrement())
+  access_authorization Int           @map("autorizacao_de_acesso")
+  cpf                  String
+  phone                String?       @map("telefone")
+  name                 String        @map("nome")
+  email                String
+  password             String        @map("senha")
+  birthday             DateTime      @map("data_nascimento")
+  city_id              Int           @map("cidades_id")
+  district             String        @map("bairro")
+  street               String        @map("logradouro")
+  zip                  Int           @map("cep")
+  number               Int           @map("numero")
+  adjunct              String        @map("complemento")
+  city                 City          @relation(fields: [city_id], references: [id])
+  appointment          Appointment[]
+  schedule             Schedule[]
 
   @@index([city_id], name: "fk_paciente_cidades1_idx")
-	@@map(name: "paciente")
+  @@map(name: "paciente")
 }
 
 model EatingPlan {
-  id          	Int        				@id @default(autoincrement())
-  guidelines  	String?						@map("orientacoes")
-  consultation	Consultation[]
-  meal    			Meal[]
+  id         Int        @id @default(autoincrement())
+  guidelines String?    @map("orientacoes")
+  schedule   Schedule[]
+  meal       Meal[]
 
-	@@map(name: "plano_alimentar")
+  @@map(name: "plano_alimentar")
 }
 
 model MealHasFood {
-  meal_id 			Int      	@default(autoincrement()) @map("refeicoes_id")
-  food_id 			Int				@map("alimento_id")
-  measure     	Float			@map("medida")
-  description 	String?		@map("descricao")
-  food     			Food 			@relation(fields: [food_id], references: [id])
-  meal    			Meal			@relation(fields: [meal_id], references: [id])
+  meal_id     Int     @default(autoincrement()) @map("refeicoes_id")
+  food_id     Int     @map("alimento_id")
+  measure     Float   @map("medida")
+  description String? @map("descricao")
+  food        Food    @relation(fields: [food_id], references: [id])
+  meal        Meal    @relation(fields: [meal_id], references: [id])
 
   @@id([meal_id, food_id])
   @@index([food_id], name: "fk_refeicao_has_alimento_alimento1_idx")
   @@index([meal_id], name: "fk_refeicao_has_alimento_refeicoes1_idx")
-	@@map(name: "refeicoes_has_alimento")
+  @@map(name: "refeicoes_has_alimento")
 }
 
 model City {
-  id         Int        @id @default(autoincrement())
-  name       String			@map("nome")
-  state_id	 Int				@map("estados_id")
-  state      State   	  @relation(fields: [state_id], references: [id])
-  patient    Patient[]
+  id      Int       @id @default(autoincrement())
+  name    String    @map("nome")
+  uf      String    @map("uf")
+  patient Patient[]
 
-  @@index([state_id], name: "fk_cidades_estados1_idx")
-	@@map(name: "cidade")
+  @@map(name: "cidade")
 }
 
 model AnthropometricData {
-  id                           Int        @id @default(autoincrement())
-	tricipital_skin_fold         Float			@map("prega_cutanea_tricipital")
-  bicipital_skin_fold          Float			@map("prega_cutanea_bicipital")
-  percentage_of_muscle_mass    Float			@map("percentual_de_massa_muscular")
-  circunferencia_da_cintura    Float			@map("circunferencia_da_cintura")
-  arm_circumference            Float      @map("circunferencia_da_braco")
-  height                       Float			@map("altura")
-  weight                       Float			@map("peso")
-  supra_iliac                  Float			@map("supra_iliaca")
-  visceral_fat                 Float			@map("gordura_viceral")
-  suprascapular                Float			@map("supra_escapular")
-  metabolic_age                Int				@map("idade_metabolica")
-  bioimpedance                 Float			@map("bioimpedancia")
-  sum_of_pleats 			         Int				@map("somatorio_de_pregas")
-  consultation                 Consultation[]
+  id                        Int        @id @default(autoincrement())
+  tricipital_skin_fold      Float      @map("prega_cutanea_tricipital")
+  bicipital_skin_fold       Float      @map("prega_cutanea_bicipital")
+  percentage_of_muscle_mass Float      @map("percentual_de_massa_muscular")
+  waist_circumference       Float      @map("circunferencia_da_cintura")
+  arm_circumference         Float      @map("circunferencia_do_braco")
+  height                    Float      @map("altura")
+  weight                    Float      @map("peso")
+  supra_iliac               Float      @map("supra_iliaca")
+  visceral_fat              Float      @map("gordura_viceral")
+  suprascapular             Float      @map("supra_escapular")
+  metabolic_age             Int        @map("idade_metabolica")
+  bioimpedance              Float      @map("bioimpedancia")
+  sum_of_pleats             Int        @map("somatorio_de_pregas")
+  schedule                  Schedule[]
 
-	@@map(name: "dado_antropometrico")
+  @@map(name: "dado_antropometrico")
 }
 
 model State {
-  id       Int      		@id @default(autoincrement())
-  name     String				@map("nome")
-  initials String				@map("iniciais")
-  cities   City[]
+  id       Int    @id @default(autoincrement())
+  name     String @map("nome")
+  initials String @map("iniciais")
 
-	@@map(name: "estado")
+  @@map(name: "estado")
 }
 
 model Meal {
-  id                     Int                      @id @default(autoincrement())
-  name                   String										@map("nome")
-  eating_plan_id     		 Int											@map("plano_alimentar_id")
-  observations           String?                  @map("observacoes")
-  eating_plan        		 EatingPlan         			@relation(fields: [eating_plan_id], references: [id])
-  meal_has_food					 MealHasFood[]
+  id             Int           @id @default(autoincrement())
+  name           String        @map("nome")
+  eating_plan_id Int           @map("plano_alimentar_id")
+  observations   String?       @map("observacoes")
+  eating_plan    EatingPlan    @relation(fields: [eating_plan_id], references: [id])
+  meal_has_food  MealHasFood[]
 
   @@index([eating_plan_id], name: "fk_refeicoes_plano_alimentar1_idx")
-	@@map(name: "refeicao")
+  @@map(name: "refeicao")
 }
 
 model Substitution {
-  food_id               Int    		@default(autoincrement()) @map("alimento_id")
-  food_substitution_id  Int				@map("alimento_substituto_id")
-  measure               Float			@map("medida")
-  description           String?		@map("descricao")
-  is_substitution_for   Food 			@relation("alimentoTosubstituto_alimento_id", fields: [food_id], references: [id])
-  substitution 					Food 			@relation("alimentoTosubstituto_alimento_substituto_id", fields: [food_substitution_id], references: [id])
+  food_id              Int     @default(autoincrement()) @map("alimento_id")
+  food_substitution_id Int     @map("alimento_substituto_id")
+  measure              Float   @map("medida")
+  description          String? @map("descricao")
+  is_substitution_for  Food    @relation("alimentoTosubstituto_alimento_id", fields: [food_id], references: [id])
+  substitution         Food    @relation("alimentoTosubstituto_alimento_substituto_id", fields: [food_substitution_id], references: [id])
 
   @@id([food_id, food_substitution_id])
   @@index([food_id], name: "fk_alimento_has_alimento_alimento1_idx")
   @@index([food_substitution_id], name: "fk_alimento_has_alimento_alimento2_idx")
-	@@map(name: "substituto")
+  @@map(name: "substituto")
 }

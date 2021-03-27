@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { paciente as Patient } from '@prisma/client';
+import { Patient } from '@prisma/client';
 import CreatePatientService from '../../src/services/CreatePatientService';
 import FakeHashProvider from '../providers/fakes/FakeHashProvider';
 import FakePatientRepository from '../repositories/fakes/FakeUsersRepository';

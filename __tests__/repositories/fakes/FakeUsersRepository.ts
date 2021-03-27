@@ -1,4 +1,4 @@
-import { paciente as Patient } from '@prisma/client';
+import { Patient } from '@prisma/client';
 import IPatientRepository from '../../../src/repositories/model/IPatientRepository';
 
 export default class FakePatientRepository implements IPatientRepository {

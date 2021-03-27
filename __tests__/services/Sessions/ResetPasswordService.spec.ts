@@ -1,4 +1,4 @@
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../src/errors/AppError';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeUserTokensRepository from '../repositories/fakes/FakeUserTokensRepository';
 import ResetPasswordService from './ResetPasswordService';
@@ -18,7 +18,7 @@ describe('ResetPasswordService', () => {
 		resetPassword = new ResetPasswordService(
 			fakeUsersRepository,
 			fakeUserTokensRepository,
-			fakeHashProvider
+			fakeHashProvider,
 		);
 	});
 
@@ -48,7 +48,7 @@ describe('ResetPasswordService', () => {
 			resetPassword.execute({
 				token: '11111',
 				password: '123123',
-			})
+			}),
 		).rejects.toBeInstanceOf(AppError);
 	});
 
@@ -58,7 +58,7 @@ describe('ResetPasswordService', () => {
 			resetPassword.execute({
 				token,
 				password: '123123',
-			})
+			}),
 		).rejects.toBeInstanceOf(AppError);
 	});
 
@@ -80,7 +80,7 @@ describe('ResetPasswordService', () => {
 			resetPassword.execute({
 				password: '321312',
 				token,
-			})
+			}),
 		).rejects.toBeInstanceOf(AppError);
 	});
 });
