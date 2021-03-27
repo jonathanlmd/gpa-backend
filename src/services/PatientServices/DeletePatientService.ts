@@ -16,7 +16,7 @@ class DeletePatientService {
 	public async execute({ id }: IRequest): Promise<Patient> {
 		const isValidPatient = await this.patientRepository.findById(id);
 		if (!isValidPatient) {
-			throw new AppError('Patient not found');
+			throw new AppError('Paciente não encontrado');
 		}
 		return await this.patientRepository.delete(id);
 	}

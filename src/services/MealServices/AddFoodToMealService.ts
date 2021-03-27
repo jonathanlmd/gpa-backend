@@ -21,11 +21,11 @@ class UpdateMealService {
 
 		const isValidMeal = this.mealRepository.findById(meal_id);
 		if (!isValidMeal) {
-			throw new AppError('Invalid Meal');
+			throw new AppError('Refeição inválida');
 		}
 		const isValidFood = this.foodRepository.findById(food_id);
 		if (!isValidFood) {
-			throw new AppError('Invalid Food');
+			throw new AppError('Refeição inválida');
 		}
 
 		return await this.mealHasFoodRepository.create({

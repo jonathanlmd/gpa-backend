@@ -16,7 +16,7 @@ class DeleteTipService {
 	public async execute({ id }: IRequest): Promise<Tip> {
 		const isValidTip = await this.tipRepository.findById(id);
 		if (!isValidTip) {
-			throw new AppError('Tip not found');
+			throw new AppError('Dica não encontrada');
 		}
 		return await this.tipRepository.delete(id);
 	}

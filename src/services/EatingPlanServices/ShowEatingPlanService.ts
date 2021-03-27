@@ -17,7 +17,7 @@ class ShowEatingPlanService {
 	public async execute({ id }: IRequest): Promise<EatingPlan> {
 		const eatingPlan = await this.eatingPlanRepository.getById(id);
 		if (!eatingPlan) {
-			throw new AppError('News not found');
+			throw new AppError('Notícia não encontrada');
 		}
 
 		return eatingPlan;

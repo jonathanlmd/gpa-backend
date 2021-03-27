@@ -16,7 +16,7 @@ class DeleteNewsService {
 	public async execute({ id }: IRequest): Promise<News> {
 		const isValidNews = await this.newsRepository.findById(id);
 		if (!isValidNews) {
-			throw new AppError('News not found');
+			throw new AppError('Notícia não encontrada');
 		}
 		return await this.newsRepository.delete(id);
 	}

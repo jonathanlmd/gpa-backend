@@ -16,7 +16,7 @@ class ShowTipService {
 	public async execute({ id }: IRequest): Promise<Tip> {
 		const tip = await this.tipRepository.findById(id);
 		if (!tip) {
-			throw new AppError('Tip not found');
+			throw new AppError('Dica não encontrada');
 		}
 
 		return tip;

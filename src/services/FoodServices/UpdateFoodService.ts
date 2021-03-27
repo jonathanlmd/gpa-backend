@@ -39,11 +39,11 @@ class UpdateFoodService {
 	}: IRequest): Promise<IResponse> {
 		const food = await this.foodsRepository.findById(id);
 		if (!food) {
-			throw new AppError('Food not found');
+			throw new AppError('Alimento não encontrado');
 		}
 
 		if (!(measure && calories && name && unity)) {
-			throw new AppError('All fields should be informed');
+			throw new AppError('Todos os campos devem ser informaods');
 		}
 		if (substitutions) {
 			await this.substitutionRepository.deleteByFood(food.id);

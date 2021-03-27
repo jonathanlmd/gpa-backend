@@ -34,11 +34,11 @@ class UpdateNewsService {
 	}: IRequest): Promise<News> {
 		const news_ = await this.newsRepository.findById(id);
 		if (!news_) {
-			throw new AppError('News not found');
+			throw new AppError('Notícia não encontrada');
 		}
 
 		if (!(id && title && description && date && nutritionist_id)) {
-			throw new AppError('All fields should be informed');
+			throw new AppError('Todos os campos obrigatórios devem ser informados');
 		}
 
 		return this.newsRepository.update({

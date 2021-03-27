@@ -16,7 +16,7 @@ class ShowFoodService {
 	public async execute({ id }: IRequest): Promise<Food> {
 		const food = await this.foodRepository.findById(id);
 		if (!food) {
-			throw new AppError('Food not found');
+			throw new AppError('Alimento não encontrado');
 		}
 
 		return food;

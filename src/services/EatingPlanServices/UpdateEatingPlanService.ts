@@ -14,7 +14,7 @@ class UpdateEatingPlanService {
 		const { guidelines, id } = eatingPlan;
 
 		if (!id) {
-			throw new AppError('Invalid Id');
+			throw new AppError('Id inválido');
 		}
 
 		return await this.eatingPlanRepository.update({

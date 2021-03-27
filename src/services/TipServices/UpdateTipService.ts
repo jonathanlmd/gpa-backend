@@ -25,11 +25,11 @@ class UpdateTipService {
 	}: IRequest): Promise<Tip> {
 		const tip = await this.tipsRepository.findById(id);
 		if (!tip) {
-			throw new AppError('Tip not found');
+			throw new AppError('Dica não encontrada');
 		}
 
 		if (!(id && content && date && nutritionist_id)) {
-			throw new AppError('All fields should be informed');
+			throw new AppError('Todos os campos obrigatórios devem ser informados');
 		}
 
 		return this.tipsRepository.update({

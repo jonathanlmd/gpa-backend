@@ -16,7 +16,7 @@ class ShowPatientProfileService {
 	public async execute({ id }: IRequest): Promise<Patient> {
 		const patient = await this.patientRepository.findById(id);
 		if (!patient) {
-			throw new AppError('Patient not found');
+			throw new AppError('Paciente não encontrado');
 		}
 
 		return patient;

@@ -19,7 +19,7 @@ class DeleteFoodService {
 	public async execute({ id }: IRequest): Promise<Food> {
 		const isValidFood = await this.foodRepository.findById(id);
 		if (!isValidFood) {
-			throw new AppError('Food not found');
+			throw new AppError('Alimento não encontrado');
 		}
 
 		await this.substitutionRepository.deleteByFood(isValidFood.id);

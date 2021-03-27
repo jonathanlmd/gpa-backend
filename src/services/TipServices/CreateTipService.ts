@@ -14,7 +14,7 @@ class CreateTipService {
 		const { content, date, nutritionist_id } = tip;
 
 		if (!(content && date && nutritionist_id)) {
-			throw new AppError('All fields should be informed');
+			throw new AppError('Todos os campos obrigatórios devem ser informados');
 		}
 
 		return await this.tipRepository.create({

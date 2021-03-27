@@ -50,7 +50,7 @@ class UpdatePatientProfileService {
 	}: IRequest): Promise<Omit<Patient, 'password'>> {
 		const patient = await this.patientsRepository.findById(id);
 		if (!patient) {
-			throw new AppError('Patient not found');
+			throw new AppError('Paciente não encontrado');
 		}
 
 		if (email) {
@@ -59,7 +59,7 @@ class UpdatePatientProfileService {
 			);
 
 			if (patientWithUpdatedEmail && patientWithUpdatedEmail.id !== id) {
-				throw new AppError('Email already in use');
+				throw new AppError('Email já está em uso');
 			}
 		}
 

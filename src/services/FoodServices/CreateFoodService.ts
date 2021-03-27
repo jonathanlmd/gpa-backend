@@ -28,7 +28,7 @@ class CreateFoodService {
 		const { measure, calories, name, unity, substitutions } = food;
 
 		if (!(measure && calories && name && unity)) {
-			throw new AppError('All fields should be informed');
+			throw new AppError('Todos os campos devem ser informados');
 		}
 
 		const newFood = await this.foodRepository.create({

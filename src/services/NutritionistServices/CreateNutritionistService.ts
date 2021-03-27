@@ -19,12 +19,12 @@ class CreatePatientService {
 		const { crn, email, name, password } = nutritionist;
 
 		if (!(crn && email && name && password)) {
-			throw new AppError('All fields should be informed');
+			throw new AppError('Todos os campos devem ser informados');
 		}
 
 		const existentUser = await this.nutritionistRepository.findByEmail(email);
 		if (existentUser) {
-			throw new AppError('Email already in use');
+			throw new AppError('Email já está em uso');
 		}
 
 		const newNutritionist = await this.nutritionistRepository.create({

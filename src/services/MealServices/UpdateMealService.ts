@@ -14,7 +14,7 @@ class UpdateMealService {
 		const { eating_plan_id, name, observations, id } = meal;
 
 		if (!(id && eating_plan_id && name)) {
-			throw new AppError('All fields should be informed');
+			throw new AppError('Todos os campos devem ser informados');
 		}
 
 		return await this.mealRepository.update({

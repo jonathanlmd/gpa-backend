@@ -14,7 +14,7 @@ class CreateNewsService {
 		const { title, description, date, nutritionist_id } = news_;
 
 		if (!(title && description && date && nutritionist_id)) {
-			throw new AppError('Some fields are required');
+			throw new AppError('Todos os campos obrigatórios devem ser preenchidos');
 		}
 
 		return await this.newsRepository.create({

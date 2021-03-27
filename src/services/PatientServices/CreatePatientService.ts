@@ -49,12 +49,12 @@ class CreatePatientService {
 				phone
 			)
 		) {
-			throw new AppError('All fields should be informed');
+			throw new AppError('Todos os campos obrigatórios devem ser preenchidos');
 		}
 
 		const existentUser = await this.patientRepository.findByEmail(email);
 		if (existentUser) {
-			throw new AppError('Email already in use');
+			throw new AppError('Email já está em uso');
 		}
 
 		const newPatient = await this.patientRepository.create({

@@ -14,7 +14,7 @@ class CreateMealService {
 		const { eating_plan_id, name, observations } = meal;
 
 		if (!(eating_plan_id && name)) {
-			throw new AppError('All fields should be informed');
+			throw new AppError('Todos os campos obrigatórios devem ser preenchidos');
 		}
 
 		return await this.mealRepository.create({

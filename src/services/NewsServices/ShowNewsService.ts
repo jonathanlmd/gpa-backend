@@ -17,7 +17,7 @@ class ShowNewsService {
 	public async execute({ id }: IRequest): Promise<News> {
 		const news_ = await this.newsRepository.findById(id);
 		if (!news_) {
-			throw new AppError('News not found');
+			throw new AppError('Notícia não encontrada');
 		}
 
 		return news_;

@@ -22,7 +22,7 @@ class DeleteEatingPlanService {
 	public async execute({ id }: IRequest): Promise<EatingPlan> {
 		const isValidEatingPlan = await this.eatingPlanRepository.getById(id);
 		if (!isValidEatingPlan) {
-			throw new AppError('Eating Plan not found');
+			throw new AppError('Plano alimentar não encontrado');
 		}
 
 		await Promise.allSettled(
