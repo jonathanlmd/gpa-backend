@@ -8,3 +8,4 @@ import './eatingPlan.container';
 import './providers.container';
 import './anamnesis.container';
 import './schedule.container';
+import './select.container';

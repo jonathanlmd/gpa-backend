@@ -10,11 +10,11 @@ interface IRequest {
 class SelectCitiesService {
 	constructor(
 		@inject('CityRepository')
-		private CityRepository: ICityRepository,
+		private cityRepository: ICityRepository,
 	) {}
 
 	public async execute({ uf }: IRequest): Promise<City[]> {
-		return await this.CityRepository.findByUf(uf);
+		return await this.cityRepository.findByUf(uf);
 	}
 }
 
