@@ -38,7 +38,6 @@ class CreatePatientService {
 				district &&
 				zip &&
 				city_id &&
-				adjunct &&
 				cpf &&
 				birthday &&
 				email &&
