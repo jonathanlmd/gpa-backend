@@ -34,7 +34,6 @@ class CreatePatientService {
 
 		if (
 			!(
-				access_authorization &&
 				district &&
 				zip &&
 				city_id &&
@@ -59,6 +58,7 @@ class CreatePatientService {
 		const newPatient = await this.patientRepository.create({
 			...patient,
 			password: await this.hashProvider.generateHash(password),
+			access_authorization: +!!access_authorization,
 		});
 
 		const { password: _, ...patientWithoutPassword } = newPatient;

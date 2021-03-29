@@ -26,6 +26,8 @@ export default class PatientController {
 			city_id,
 		} = request.body;
 
+		console.table(request.body);
+
 		const createPatientService = await container.resolve(CreatePatientService);
 
 		const patient = await createPatientService.execute({
