@@ -86,13 +86,9 @@ export default class PatientRepository implements IPatientRepository {
 				access_authorization: true,
 				district: true,
 				zip: true,
-				city: {
-					include: {
-						state: true,
-					},
-				},
+				city: true,
 				adjunct: true,
-				consultation: true,
+				schedule: true,
 				cpf: true,
 				birthday: true,
 				email: true,
