@@ -72,6 +72,9 @@ export default class PatientRepository implements IPatientRepository {
 
 	public async findById(id: number): Promise<Patient | null> {
 		return await this.prismaClient.patient.findFirst({
+			include: {
+				city: true,
+			},
 			where: {
 				id,
 			},

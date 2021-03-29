@@ -51,6 +51,12 @@ export default class NewRepository implements INewsRepository {
 		return await this.prismaClient.news.findMany();
 	}
 
+	public async getByMonthAndYear(month: number, year: number): Promise<News[]> {
+		return await this.prismaClient.$queryRaw(
+			`SELECT * FROM noticia n WHERE MONTH(n.data) = ${month} AND YEAR(n.data) = ${year}`,
+		);
+	}
+
 	public async delete(id: number): Promise<News> {
 		return await this.prismaClient.news.delete({
 			where: {

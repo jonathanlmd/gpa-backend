@@ -16,5 +16,6 @@ export default interface INewsRepository {
 	delete(id: number): Promise<News>;
 	findById(id: number): Promise<News | null>;
 	getAll(): Promise<News[]>;
+	getByMonthAndYear(month: number, year: number): Promise<News[]>;
 	update(news: INewsUpdate): Promise<News>;
 }

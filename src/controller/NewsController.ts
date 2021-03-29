@@ -4,6 +4,7 @@ import {
 	ListNewsService,
 	DeleteNewsService,
 	ShowNewsService,
+	GetNewsByMonthService,
 	UpdateNewsService,
 	CreateNewsService,
 } from '../services/NewsServices';
@@ -79,6 +80,23 @@ export default class NewsController {
 		const listNewsService = await container.resolve(ListNewsService);
 
 		const news = await listNewsService.execute();
+
+		return response.json(news);
+	}
+
+	public async getByMonthAndYear(
+		request: Request,
+		response: Response,
+	): Promise<Response> {
+		const { month, year } = request.params;
+		const getNewsByMonthService = await container.resolve(
+			GetNewsByMonthService,
+		);
+
+		const news = await getNewsByMonthService.execute(
+			parseInt(month, 10),
+			parseInt(year, 10),
+		);
 
 		return response.json(news);
 	}
