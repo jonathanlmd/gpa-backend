@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { CreateScheduleService } from '../services/ScheduleServices';
+import {
+	ListScheduleByPatientService,
+	ListScheduleByIdService,
+	CreateScheduleService,
+} from '../services/ScheduleServices';
 import { AnamnesisCreateService } from '../services/AnamnesisService';
 import { AnthropometricDataService } from '../services/AnthropometricServices';
 
@@ -54,11 +58,31 @@ export default class ScheduleController {
 		});
 	}
 
-	public async show(request: Request, response: Response): Promise<Response> {
-		return response.json({});
+	public async findByPatient(
+		request: Request,
+		response: Response,
+	): Promise<Response> {
+		const { id } = request.params;
+		const listScheduleByPatientService = await container.resolve(
+			ListScheduleByPatientService,
+		);
+
+		const schedules = await listScheduleByPatientService.execute(
+			parseInt(id, 10),
+		);
+		return response.json(schedules);
 	}
 
-	public async list(request: Request, response: Response): Promise<Response> {
-		return response.json({});
+	public async findById(
+		request: Request,
+		response: Response,
+	): Promise<Response> {
+		const { id } = request.params;
+		const listScheduleByIdService = await container.resolve(
+			ListScheduleByIdService,
+		);
+
+		const schedule = await listScheduleByIdService.execute(parseInt(id, 10));
+		return response.json(schedule);
 	}
 }

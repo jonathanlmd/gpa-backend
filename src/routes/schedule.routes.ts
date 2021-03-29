@@ -6,7 +6,7 @@ const scheduleRoutes = Router();
 const scheduleController = new ScheduleController();
 
 scheduleRoutes.post('/', scheduleController.create);
-scheduleRoutes.get('/:id', scheduleController.show);
-scheduleRoutes.get('/last/:id', scheduleController.list);
+scheduleRoutes.get('/:id', scheduleController.findById);
+scheduleRoutes.get('/patient/:id', scheduleController.findByPatient);
 
 export default scheduleRoutes;
