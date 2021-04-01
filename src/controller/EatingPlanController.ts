@@ -9,7 +9,7 @@ import {
 
 export default class MealController {
 	public async create(request: Request, response: Response): Promise<Response> {
-		const { guidelines, scheduleId } = request.body;
+		const { guidelines, schedule_id } = request.body;
 
 		const createEatingPlanService = await container.resolve(
 			CreateEatingPlanService,
@@ -19,7 +19,7 @@ export default class MealController {
 			{
 				guidelines,
 			},
-			scheduleId,
+			parseInt(schedule_id, 10),
 		);
 
 		return response.json(meal);
