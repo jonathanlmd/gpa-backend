@@ -11,23 +11,36 @@ export default class AnamnesisRepository implements IAnamnesisRepository {
 	public async createMany(
 		anamnesis: Omit<Anamnesis, 'id'>[],
 	): Promise<Prisma.BatchPayload> {
-		return await this.prismaClient.anamnesis.createMany({data: anamnesis});
+		return await this.prismaClient.anamnesis.createMany({ data: anamnesis });
 	}
 
 	public async create(
 		anamnesis: Omit<Anamnesis, 'id'>,
 		scheduleId: number,
 	): Promise<Anamnesis> {
-		  return await this.prismaClient.anamnesis.create({data: {
-			anamnesis_has_schedule: {
-				create: {
-					schedule_id: scheduleId,
-				}
+		return await this.prismaClient.anamnesis.create({
+			data: {
+				anamnesis_has_schedule: {
+					create: {
+						schedule_id: scheduleId,
+					},
+				},
+				...anamnesis,
 			},
-			...anamnesis
-		}});
+		});
 	}
 
+	public async deleteBySchedule(scheduleId: number): Promise<any> {
+		return await this.prismaClient.anamnesis.deleteMany({
+			where: {
+				anamnesis_has_schedule: {
+					every: {
+						schedule_id: scheduleId,
+					},
+				},
+			},
+		});
+	}
 
 	public async findBySchedule(scheduleId: number): Promise<Anamnesis[]> {
 		return await this.prismaClient.anamnesis.findMany({

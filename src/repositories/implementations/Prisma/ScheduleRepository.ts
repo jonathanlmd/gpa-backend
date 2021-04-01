@@ -1,6 +1,7 @@
 import { Schedule, PrismaClient, Prisma } from '@prisma/client';
 import IScheduleRepository, {
 	ICreateSchedule,
+	IUpdateSchedule,
 } from '../../model/IScheduleRepository';
 
 export default class ScheduleRepository implements IScheduleRepository {
@@ -14,6 +15,18 @@ export default class ScheduleRepository implements IScheduleRepository {
 		return await this.prismaClient.schedule.create({
 			data: {
 				...schedule,
+			},
+		});
+	}
+
+	public async update(schedule: IUpdateSchedule): Promise<Schedule> {
+		const { id, ...schedule_ } = schedule;
+		return await this.prismaClient.schedule.update({
+			data: {
+				...schedule_,
+			},
+			where: {
+				id,
 			},
 		});
 	}

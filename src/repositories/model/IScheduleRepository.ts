@@ -7,9 +7,17 @@ export interface ICreateSchedule {
 	anthropometric_data_id: number;
 	observation: string | null;
 }
+export interface IUpdateSchedule {
+	value: number;
+	id: number;
+	date: Date;
+	patient_id: number;
+	observation: string | null;
+}
 
 export default interface IScheduleRepository {
 	create(schedule: ICreateSchedule): Promise<Schedule>;
+	update(schedule: IUpdateSchedule): Promise<Schedule>;
 	linkEatingPlan(eatingPlanId: number, scheduleId: number): Promise<Schedule>;
 	findByPatient(patientId: number): Promise<Schedule[]>;
 	findById(id: number): Promise<Schedule | null>;

@@ -37,8 +37,6 @@ class CreateAnamneseService {
 			anamnese => anamnese.status === 'fulfilled',
 		);
 
-		console.log('Anamesis', filtered);
-
 		return filtered.map(item => (item as { value: Anamnesis }).value);
 	}
 }

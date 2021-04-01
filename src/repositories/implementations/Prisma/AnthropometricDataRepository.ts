@@ -1,5 +1,6 @@
 import { AnthropometricData, PrismaClient, Prisma } from '@prisma/client';
 import IAnthropometricRepository from '../../model/IAnthropometricDataRepository';
+import IUpdateAnthropometricData from '../../model/IAnthropometricDataRepository';
 
 export default class AnthropometricDataRepository
 	implements IAnthropometricRepository {
@@ -15,6 +16,20 @@ export default class AnthropometricDataRepository
 		return await this.prismaClient.anthropometricData.create({
 			data: {
 				...anthropometric,
+			},
+		});
+	}
+
+	public async update(
+		anthropometricData: AnthropometricData,
+	): Promise<AnthropometricData> {
+		const { id, ...anthropometricData_ } = anthropometricData;
+		return await this.prismaClient.anthropometricData.update({
+			data: {
+				...anthropometricData_,
+			},
+			where: {
+				id,
 			},
 		});
 	}

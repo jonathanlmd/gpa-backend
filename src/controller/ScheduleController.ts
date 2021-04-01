@@ -3,10 +3,17 @@ import { container } from 'tsyringe';
 import {
 	ListScheduleByPatientService,
 	ListScheduleByIdService,
+	UpdateScheduleService,
 	CreateScheduleService,
 } from '../services/ScheduleServices';
-import { AnamnesisCreateService } from '../services/AnamnesisService';
-import { AnthropometricDataService } from '../services/AnthropometricServices';
+import {
+	AnamnesisCreateService,
+	AnamnesisDeleteService,
+} from '../services/AnamnesisService';
+import {
+	CreateAnthropometricDataService,
+	UpdateAnthropometricDataService,
+} from '../services/AnthropometricServices';
 
 export default class ScheduleController {
 	public async create(request: Request, response: Response): Promise<Response> {
@@ -20,11 +27,11 @@ export default class ScheduleController {
 			value,
 		} = schedule;
 
-		const anthropometricDataService = await container.resolve(
-			AnthropometricDataService,
+		const createAnthropometricDataService = await container.resolve(
+			CreateAnthropometricDataService,
 		);
 
-		const newAnthropometricData = await anthropometricDataService.execute(
+		const newAnthropometricData = await createAnthropometricDataService.execute(
 			anthropometricData,
 		);
 
@@ -55,6 +62,45 @@ export default class ScheduleController {
 			anamnesis: newAnamnese,
 			schedule: newSchedule,
 			anthropometricData: newAnthropometricData,
+		});
+	}
+
+	public async update(request: Request, response: Response): Promise<Response> {
+		const { anamnesis, anthropometricData, schedule } = request.body;
+
+		const updateAnthropometricDataService = await container.resolve(
+			UpdateAnthropometricDataService,
+		);
+
+		const updateAnthropometricData = await updateAnthropometricDataService.execute(
+			anthropometricData,
+		);
+
+		const updateScheduleService = await container.resolve(
+			UpdateScheduleService,
+		);
+
+		const updateSchedule = await updateScheduleService.execute(schedule);
+
+		const anamnesisDeleteService = await container.resolve(
+			AnamnesisDeleteService,
+		);
+
+		await anamnesisDeleteService.execute(schedule.id);
+
+		const anamnesisCreateService = await container.resolve(
+			AnamnesisCreateService,
+		);
+
+		const updateAnamnese = await anamnesisCreateService.execute(
+			anamnesis,
+			schedule.id,
+		);
+
+		return response.json({
+			anamnesis: updateAnamnese,
+			schedule: updateSchedule,
+			anthropometricData: updateAnthropometricData,
 		});
 	}
 

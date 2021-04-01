@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import AnthropometricDataService from './AnthropometricDataService';
+import CreateAnthropometricDataService from './CreateAnthropometricDataService';
+import UpdateAnthropometricDataService from './UpdateAnthropometricDataService';
 
-export { AnthropometricDataService };
+export { CreateAnthropometricDataService, UpdateAnthropometricDataService };
