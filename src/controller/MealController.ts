@@ -4,6 +4,7 @@ import {
 	AddFoodToMealService,
 	CreateMealService,
 	DeleteMealService,
+	RemoveFoodFromMealService,
 	UpdateMealService,
 } from '../services/MealServices';
 
@@ -49,6 +50,23 @@ export default class MealController {
 			food_id,
 			meal_id,
 			measure,
+		});
+
+		return response.json(mealHasFood);
+	}
+
+	public async removeFoodToMeal(
+		request: Request,
+		response: Response,
+	): Promise<Response> {
+		const { foodId, mealId } = request.params;
+		const removeFoodFromMealService = await container.resolve(
+			RemoveFoodFromMealService,
+		);
+
+		const mealHasFood = await removeFoodFromMealService.execute({
+			food_id: parseInt(foodId, 10),
+			meal_id: parseInt(mealId, 10),
 		});
 
 		return response.json(mealHasFood);

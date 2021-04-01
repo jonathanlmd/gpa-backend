@@ -153,7 +153,7 @@ model EatingPlan {
 }
 
 model MealHasFood {
-  meal_id     Int     @default(autoincrement()) @map("refeicoes_id")
+  meal_id     Int     @map("refeicoes_id")
   food_id     Int     @map("alimento_id")
   measure     Float   @map("medida")
   description String? @map("descricao")

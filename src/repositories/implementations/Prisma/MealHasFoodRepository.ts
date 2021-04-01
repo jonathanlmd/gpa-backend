@@ -51,6 +51,17 @@ export default class MealHasFoodRepository implements IMealHasFoodRepository {
 		});
 	}
 
+	public async delete({ food_id, meal_id }: IMealHasFoodIds): Promise<any> {
+		return await this.prismaClient.mealHasFood.delete({
+			where: {
+				meal_id_food_id: {
+					food_id,
+					meal_id,
+				},
+			},
+		});
+	}
+
 	public async getByFood(food_id: number): Promise<MealHasFood[]> {
 		return await this.prismaClient.mealHasFood.findMany({
 			where: {

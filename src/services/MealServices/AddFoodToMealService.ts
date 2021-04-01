@@ -6,7 +6,7 @@ import IMealHasFoodRepository from '../../repositories/model/IMealHasFoodReposit
 import AppError from '../../errors/AppError';
 
 @injectable()
-class UpdateMealService {
+class AddFoodToMealService {
 	constructor(
 		@inject('MealRepository')
 		private mealRepository: IMealRepository,
@@ -25,7 +25,16 @@ class UpdateMealService {
 		}
 		const isValidFood = this.foodRepository.findById(food_id);
 		if (!isValidFood) {
-			throw new AppError('Refeição inválida');
+			throw new AppError('Alimento inválido');
+		}
+
+		const record = await this.mealHasFoodRepository.findByIds({
+			food_id,
+			meal_id,
+		});
+
+		if (!record) {
+			throw new AppError('Alimento já está inserido nessa refeição');
 		}
 
 		return await this.mealHasFoodRepository.create({
@@ -37,4 +46,4 @@ class UpdateMealService {
 	}
 }
 
-export default UpdateMealService;
+export default AddFoodToMealService;

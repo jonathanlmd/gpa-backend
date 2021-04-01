@@ -9,5 +9,9 @@ mealRoutes.post('/', mealController.create);
 mealRoutes.put('/', mealController.update);
 mealRoutes.delete('/:id', mealController.delete);
 mealRoutes.post('/addFood', mealController.addFoodToMeal);
+mealRoutes.delete(
+	'/removeFood/:mealId/:foodId',
+	mealController.removeFoodToMeal,
+);
 
 export default mealRoutes;
