@@ -10,6 +10,7 @@ export interface ICreateSchedule {
 
 export default interface IScheduleRepository {
 	create(schedule: ICreateSchedule): Promise<Schedule>;
+	linkEatingPlan(eatingPlanId: number, scheduleId: number): Promise<Schedule>;
 	findByPatient(patientId: number): Promise<Schedule[]>;
 	findById(id: number): Promise<Schedule | null>;
 }

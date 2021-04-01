@@ -26,6 +26,20 @@ export default class ScheduleRepository implements IScheduleRepository {
 		});
 	}
 
+	public async linkEatingPlan(
+		eatingPlanId: number,
+		scheduleId: number,
+	): Promise<Schedule> {
+		return await this.prismaClient.schedule.update({
+			data: {
+				eating_plan_id: eatingPlanId,
+			},
+			where: {
+				id: scheduleId,
+			},
+		});
+	}
+
 	public async findById(id: number): Promise<Schedule | null> {
 		return await this.prismaClient.schedule.findFirst({
 			where: {

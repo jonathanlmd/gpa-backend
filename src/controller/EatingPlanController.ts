@@ -9,15 +9,18 @@ import {
 
 export default class MealController {
 	public async create(request: Request, response: Response): Promise<Response> {
-		const { guidelines } = request.body;
+		const { guidelines, scheduleId } = request.body;
 
 		const createEatingPlanService = await container.resolve(
 			CreateEatingPlanService,
 		);
 
-		const meal = await createEatingPlanService.execute({
-			guidelines,
-		});
+		const meal = await createEatingPlanService.execute(
+			{
+				guidelines,
+			},
+			scheduleId,
+		);
 
 		return response.json(meal);
 	}
