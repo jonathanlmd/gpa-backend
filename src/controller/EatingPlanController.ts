@@ -7,7 +7,7 @@ import {
 	UpdateEatingPlanService,
 } from '../services/EatingPlanServices';
 
-export default class MealController {
+export default class EatingPlanController {
 	public async create(request: Request, response: Response): Promise<Response> {
 		const { guidelines, schedule_id } = request.body;
 
