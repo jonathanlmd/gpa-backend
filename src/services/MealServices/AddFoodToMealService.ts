@@ -1,9 +1,13 @@
 import { inject, injectable } from 'tsyringe';
-import { MealHasFood } from '@prisma/client';
+import { MealHasFood, Food } from '@prisma/client';
 import IFoodRepository from '../../repositories/model/IFoodRepository';
 import IMealRepository from '../../repositories/model/IMealRepository';
 import IMealHasFoodRepository from '../../repositories/model/IMealHasFoodRepository';
 import AppError from '../../errors/AppError';
+
+interface IProps extends MealHasFood {
+	food: Food;
+}
 
 @injectable()
 class AddFoodToMealService {
@@ -16,14 +20,14 @@ class AddFoodToMealService {
 		private mealHasFoodRepository: IMealHasFoodRepository,
 	) {}
 
-	public async execute(ids: MealHasFood): Promise<MealHasFood> {
+	public async execute(ids: MealHasFood): Promise<IProps> {
 		const { meal_id, food_id, description, measure } = ids;
 
 		const isValidMeal = this.mealRepository.findById(meal_id);
 		if (!isValidMeal) {
 			throw new AppError('Refeição inválida');
 		}
-		const isValidFood = this.foodRepository.findById(food_id);
+		const isValidFood = await this.foodRepository.findById(food_id);
 		if (!isValidFood) {
 			throw new AppError('Alimento inválido');
 		}
@@ -37,12 +41,16 @@ class AddFoodToMealService {
 			throw new AppError('Alimento já está inserido nessa refeição');
 		}
 
-		return await this.mealHasFoodRepository.create({
+		const mealHasFood = await this.mealHasFoodRepository.create({
 			description,
 			food_id,
 			meal_id,
 			measure,
 		});
+		return {
+			...mealHasFood,
+			food: isValidFood,
+		};
 	}
 }
 
