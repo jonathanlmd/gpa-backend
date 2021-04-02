@@ -33,7 +33,7 @@ class AddFoodToMealService {
 			meal_id,
 		});
 
-		if (!record) {
+		if (record) {
 			throw new AppError('Alimento já está inserido nessa refeição');
 		}
 
