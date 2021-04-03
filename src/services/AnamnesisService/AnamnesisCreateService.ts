@@ -28,10 +28,18 @@ class CreateAnamneseService {
 		}
 
 		const newAnamnesisPromises = anamnesis.map(anamnese => {
-			return this.anamnesisRepository.create(anamnese, scheduleId);
+			return this.anamnesisRepository.create(
+				{
+					type: anamnese.type,
+					description: anamnese.description,
+					dangerousness: anamnese.dangerousness,
+				},
+				scheduleId,
+			);
 		});
 
 		const newAnamnesis = await Promise.allSettled(newAnamnesisPromises);
+		console.log(newAnamnesis);
 
 		const filtered = newAnamnesis.filter(
 			anamnese => anamnese.status === 'fulfilled',
