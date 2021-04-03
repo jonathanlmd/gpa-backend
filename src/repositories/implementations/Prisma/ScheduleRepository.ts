@@ -36,6 +36,15 @@ export default class ScheduleRepository implements IScheduleRepository {
 			where: {
 				patient_id: patientId,
 			},
+			include: {
+				anamnesis_has_schedule: {
+					include: {
+						anamnesis: true,
+					},
+				},
+				anthropometric_data: true,
+				eating_plan: true,
+			},
 		});
 	}
 
