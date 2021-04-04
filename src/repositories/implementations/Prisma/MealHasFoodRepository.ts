@@ -3,6 +3,7 @@ import IMealHasFoodRepository, {
 	IMealHasFoodIds,
 	IMealHasFoodUpdate,
 } from '../../model/IMealHasFoodRepository';
+import { PrismaClientConnection } from '../../../server';
 
 export default class MealHasFoodRepository implements IMealHasFoodRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;

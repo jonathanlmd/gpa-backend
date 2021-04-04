@@ -27,7 +27,7 @@ export default class ScheduleController {
 			patient_id,
 			value,
 		} = schedule;
-
+		console.table(schedule);
 		const createAnthropometricDataService = await container.resolve(
 			CreateAnthropometricDataService,
 		);
