@@ -128,7 +128,26 @@ export default class ScheduleController {
 			ListScheduleByIdService,
 		);
 
-		const schedule = await listScheduleByIdService.execute(parseInt(id, 10));
-		return response.json(schedule);
+		const schedule: any = await listScheduleByIdService.execute(
+			parseInt(id, 10),
+		);
+		const anamnesis = schedule.anamnesis_has_schedule.map(item => ({
+			...item.anamnesis,
+		}));
+		const {
+			anamnesis_has_schedule: _,
+			eating_plan,
+			anthropometric_data,
+			...rest
+		} = schedule;
+
+		console.log(schedule, 'hahahaha');
+
+		return response.json({
+			schedule: rest,
+			anamnesis,
+			anthropometricData: anthropometric_data,
+			eatingPlan: eating_plan,
+		});
 	}
 }

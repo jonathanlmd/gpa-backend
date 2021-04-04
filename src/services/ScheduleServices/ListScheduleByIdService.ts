@@ -4,7 +4,7 @@ import IScheduleRepository from '../../repositories/model/IScheduleRepository';
 import AppError from '../../errors/AppError';
 
 @injectable()
-class ListScheduleByPatientService {
+class ListScheduleByIdService {
 	constructor(
 		@inject('ScheduleRepository')
 		private scheduleRepository: IScheduleRepository,
@@ -18,4 +18,4 @@ class ListScheduleByPatientService {
 	}
 }
 
-export default ListScheduleByPatientService;
+export default ListScheduleByIdService;
