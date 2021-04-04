@@ -20,5 +20,6 @@ export default interface IScheduleRepository {
 	update(schedule: IUpdateSchedule): Promise<Schedule>;
 	linkEatingPlan(eatingPlanId: number, scheduleId: number): Promise<Schedule>;
 	findByPatient(patientId: number): Promise<Schedule[]>;
+	findLastByPatient(patientId: number): Promise<Schedule | null>;
 	findById(id: number): Promise<Schedule | null>;
 }

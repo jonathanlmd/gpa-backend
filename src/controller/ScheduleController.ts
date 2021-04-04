@@ -4,6 +4,7 @@ import {
 	ListScheduleByPatientService,
 	ListScheduleByIdService,
 	UpdateScheduleService,
+	LastScheduleByPatientService,
 	CreateScheduleService,
 } from '../services/ScheduleServices';
 import {
@@ -119,6 +120,21 @@ export default class ScheduleController {
 		return response.json(schedules);
 	}
 
+	public async findLastByPatient(
+		request: Request,
+		response: Response,
+	): Promise<Response> {
+		const { id } = request.params;
+		const lastScheduleByPatientService = await container.resolve(
+			LastScheduleByPatientService,
+		);
+
+		const schedules = await lastScheduleByPatientService.execute(
+			parseInt(id, 10),
+		);
+		return response.json(schedules);
+	}
+
 	public async findById(
 		request: Request,
 		response: Response,
@@ -140,8 +156,6 @@ export default class ScheduleController {
 			anthropometric_data,
 			...rest
 		} = schedule;
-
-		console.log(schedule, 'hahahaha');
 
 		return response.json({
 			schedule: rest,

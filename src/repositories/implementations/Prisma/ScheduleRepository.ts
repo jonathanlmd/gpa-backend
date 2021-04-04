@@ -48,6 +48,26 @@ export default class ScheduleRepository implements IScheduleRepository {
 		});
 	}
 
+	public async findLastByPatient(patientId: number): Promise<Schedule | null> {
+		return await this.prismaClient.schedule.findFirst({
+			where: {
+				patient_id: patientId,
+			},
+			orderBy: {
+				date: 'desc',
+			},
+			include: {
+				anamnesis_has_schedule: {
+					include: {
+						anamnesis: true,
+					},
+				},
+				anthropometric_data: true,
+				eating_plan: true,
+			},
+		});
+	}
+
 	public async linkEatingPlan(
 		eatingPlanId: number,
 		scheduleId: number,

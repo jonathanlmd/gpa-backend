@@ -9,5 +9,6 @@ scheduleRoutes.post('/', scheduleController.create);
 scheduleRoutes.put('/', scheduleController.update);
 scheduleRoutes.get('/:id', scheduleController.findById);
 scheduleRoutes.get('/patient/:id', scheduleController.findByPatient);
+scheduleRoutes.get('/patient/last/:id', scheduleController.findLastByPatient);
 
 export default scheduleRoutes;
