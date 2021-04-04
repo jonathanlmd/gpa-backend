@@ -1,4 +1,5 @@
 import { Schedule, PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClientConnection } from '../../../server';
 import IScheduleRepository, {
 	ICreateSchedule,
 	IUpdateSchedule,
@@ -8,7 +9,7 @@ export default class ScheduleRepository implements IScheduleRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
 
 	constructor() {
-		this.prismaClient = new PrismaClient();
+		this.prismaClient = PrismaClientConnection;
 	}
 
 	public async create(schedule: ICreateSchedule): Promise<Schedule> {

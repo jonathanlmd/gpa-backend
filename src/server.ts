@@ -3,9 +3,13 @@ import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import helmet from 'helmet';
 import cors from 'cors';
+import { PrismaClient } from '@prisma/client';
 import routes from './routes/index.routes';
 import './container';
 import AppError from './errors/AppError';
+
+// eslint-disable-next-line import/prefer-default-export
+export const PrismaClientConnection = new PrismaClient();
 
 const app = express();
 

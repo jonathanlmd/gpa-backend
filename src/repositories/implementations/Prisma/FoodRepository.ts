@@ -2,12 +2,13 @@ import { Food, PrismaClient, Prisma } from '@prisma/client';
 import IFoodRepository, {
 	IFoodUpdateResponse,
 } from '../../model/IFoodRepository';
+import { PrismaClientConnection } from '../../../server';
 
 export default class FoodRepository implements IFoodRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
 
 	constructor() {
-		this.prismaClient = new PrismaClient();
+		this.prismaClient = PrismaClientConnection;
 	}
 
 	public async create(food: Omit<Food, 'id'>): Promise<Food> {

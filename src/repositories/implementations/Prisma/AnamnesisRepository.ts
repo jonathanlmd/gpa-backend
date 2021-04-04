@@ -1,11 +1,12 @@
 import { Anamnesis, PrismaClient, Prisma } from '@prisma/client';
 import IAnamnesisRepository from '../../model/IAnamnesisRepository';
+import { PrismaClientConnection } from '../../../server';
 
 export default class AnamnesisRepository implements IAnamnesisRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
 
 	constructor() {
-		this.prismaClient = new PrismaClient();
+		this.prismaClient = PrismaClientConnection;
 	}
 
 	public async createMany(

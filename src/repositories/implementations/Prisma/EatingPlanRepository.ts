@@ -3,12 +3,13 @@ import IEatingPlanRepository, {
 	IEatingPlanUpdate,
 	IResponseGet,
 } from '../../model/IEatingPlanRepository';
+import { PrismaClientConnection } from '../../../server';
 
 export default class EatingPlanRepository implements IEatingPlanRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
 
 	constructor() {
-		this.prismaClient = new PrismaClient();
+		this.prismaClient = PrismaClientConnection;
 	}
 
 	public async create(

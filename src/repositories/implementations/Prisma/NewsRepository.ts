@@ -1,11 +1,12 @@
 import { News, PrismaClient, Prisma } from '@prisma/client';
 import INewsRepository from '../../model/INewsRepository';
+import { PrismaClientConnection } from '../../../server';
 
 export default class NewRepository implements INewsRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
 
 	constructor() {
-		this.prismaClient = new PrismaClient();
+		this.prismaClient = PrismaClientConnection;
 	}
 
 	public async create(news: Omit<News, 'id'>): Promise<News> {

@@ -1,11 +1,12 @@
 import { Patient, PrismaClient, Prisma } from '@prisma/client';
 import IPatientRepository from '../../model/IPatientRepository';
+import { PrismaClientConnection } from '../../../server';
 
 export default class PatientRepository implements IPatientRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
 
 	constructor() {
-		this.prismaClient = new PrismaClient();
+		this.prismaClient = PrismaClientConnection;
 	}
 
 	public async create(patient: Omit<Patient, 'id'>): Promise<Patient> {

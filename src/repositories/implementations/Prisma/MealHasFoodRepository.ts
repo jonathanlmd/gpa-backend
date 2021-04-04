@@ -8,7 +8,7 @@ export default class MealHasFoodRepository implements IMealHasFoodRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
 
 	constructor() {
-		this.prismaClient = new PrismaClient();
+		this.prismaClient = PrismaClientConnection;
 	}
 
 	public async create(mealHasFood: MealHasFood): Promise<MealHasFood> {

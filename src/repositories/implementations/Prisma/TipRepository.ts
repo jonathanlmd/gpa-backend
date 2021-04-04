@@ -1,11 +1,12 @@
 import { Tip, PrismaClient, Prisma } from '@prisma/client';
 import ITipRepository from '../../model/ITipRepository';
+import { PrismaClientConnection } from '../../../server';
 
 export default class TipRepository implements ITipRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
 
 	constructor() {
-		this.prismaClient = new PrismaClient();
+		this.prismaClient = PrismaClientConnection;
 	}
 
 	public async create(tip: Omit<Tip, 'id'>): Promise<Tip> {

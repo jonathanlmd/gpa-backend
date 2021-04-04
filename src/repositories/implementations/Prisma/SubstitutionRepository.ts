@@ -3,12 +3,13 @@ import ISubstitutionRepository, {
 	ISubstitutionUpdate,
 	ISubstitutionIds,
 } from '../../model/ISubstitutionRepository';
+import { PrismaClientConnection } from '../../../server';
 
 export default class SubstitutionRepository implements ISubstitutionRepository {
 	private prismaClient: PrismaClient<Prisma.PrismaClientOptions, never>;
 
 	constructor() {
-		this.prismaClient = new PrismaClient();
+		this.prismaClient = PrismaClientConnection;
 	}
 
 	public async create(substitution: Substitution): Promise<Substitution> {
