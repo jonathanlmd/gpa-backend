@@ -39,7 +39,7 @@ export default class SendForgotPasswordEmailService {
 
 		const token = sign({ hash }, secret, {
 			subject: patient.id.toString(),
-			expiresIn,
+			expiresIn: '1d',
 		});
 
 		const forgotPasswordTemplate = path.resolve(
