@@ -5,6 +5,7 @@ import INutritionistRepository from '../../repositories/model/INutritionistRepos
 import authConfig from '../../config/auth';
 import IHashProvider from '../../providers/HashProvider/models/IHashProvider';
 import IPatientRepository from '../../repositories/model/IPatientRepository';
+import AppError from '../../errors/AppError';
 
 interface IRequestDTO {
 	email: string;
@@ -53,7 +54,7 @@ class AuthenticatePatientService {
 		);
 
 		if (!passwordMatched) {
-			throw new Error('Incorrect email/password combination');
+			throw new AppError('Email/password incorretos');
 		}
 
 		const { secret, expiresIn } = authConfig.jwt;

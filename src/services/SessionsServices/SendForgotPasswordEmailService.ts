@@ -14,7 +14,7 @@ interface IRequest {
 @injectable()
 export default class SendForgotPasswordEmailService {
 	constructor(
-		@inject('UsersRepository')
+		@inject('PatientRepository')
 		private patientsRepository: IPatientRepository,
 		@inject('MailProvider')
 		private mailProvider: IMailProvider,
@@ -28,14 +28,13 @@ export default class SendForgotPasswordEmailService {
 			throw new AppError('Patient does not exists');
 		}
 
-		const hash = this.hashProvider.generateHash(
+		const hash = await this.hashProvider.generateHash(
 			JSON.stringify({
-				created_at: new Date(),
 				id: patient.id,
 			}),
 		);
 
-		const { secret, expiresIn } = authConfig.jwt;
+		const { secret } = authConfig.jwt;
 
 		const token = sign({ hash }, secret, {
 			subject: patient.id.toString(),
@@ -50,7 +49,7 @@ export default class SendForgotPasswordEmailService {
 			'forgot_password.hbs',
 		);
 
-		await this.mailProvider.sendMail({
+		return await this.mailProvider.sendMail({
 			to: {
 				name: patient.name,
 				email: patient.email,
@@ -60,7 +59,7 @@ export default class SendForgotPasswordEmailService {
 				file: forgotPasswordTemplate,
 				variables: {
 					name: patient.name,
-					link: `${process.env.WEB_APP_URL}/reset_password?token=${token}`,
+					link: `${process.env.WEB_APP_URL}/reset_password/${token}`,
 				},
 			},
 		});
