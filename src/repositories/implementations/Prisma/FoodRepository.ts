@@ -48,7 +48,11 @@ export default class FoodRepository implements IFoodRepository {
 	public async getAll(): Promise<Food[]> {
 		return await this.prismaClient.food.findMany({
 			include: {
-				substitutions: true,
+				substitutions: {
+					include: {
+						substitution: true,
+					},
+				},
 			},
 		});
 	}
