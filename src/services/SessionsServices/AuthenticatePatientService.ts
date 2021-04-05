@@ -4,6 +4,7 @@ import { Patient } from '@prisma/client';
 import authConfig from '../../config/auth';
 import IHashProvider from '../../providers/HashProvider/models/IHashProvider';
 import IPatientRepository from '../../repositories/model/IPatientRepository';
+import AppError from '../../errors/AppError';
 
 interface IRequestDTO {
 	email: string;
@@ -31,7 +32,7 @@ class AuthenticatePatientService {
 		const patient = await this.patientRepository.findByEmail(email);
 
 		if (!patient) {
-			throw new Error('Incorrect email/password combination.');
+			throw new AppError('Email/password incorretos.');
 		}
 
 		const passwordMatched = await this.hashProvider.compareHash(
@@ -40,7 +41,7 @@ class AuthenticatePatientService {
 		);
 
 		if (!passwordMatched) {
-			throw new Error('Incorrect email/password combination');
+			throw new AppError('Email/password incorretos.');
 		}
 
 		const { secret, expiresIn } = authConfig.jwt;

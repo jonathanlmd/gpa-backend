@@ -42,7 +42,7 @@ class AuthenticatePatientService {
 		if (!user) {
 			user = await this.patientRepository.findByEmail(email);
 			if (!user) {
-				throw new Error('Incorrect email/password combination.');
+				throw new AppError('Email/password incorretos.');
 			}
 			role = 'patient';
 		} else {

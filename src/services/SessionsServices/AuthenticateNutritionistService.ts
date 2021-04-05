@@ -4,6 +4,7 @@ import { Nutritionist } from '@prisma/client';
 import authConfig from '../../config/auth';
 import IHashProvider from '../../providers/HashProvider/models/IHashProvider';
 import INutritionistRepository from '../../repositories/model/INutritionistRepository';
+import AppError from '../../errors/AppError';
 
 interface IRequestDTO {
 	email: string;
@@ -31,7 +32,7 @@ class AuthenticateNutritionistService {
 		const nutritionist = await this.nutritionistRepository.findByEmail(email);
 
 		if (!nutritionist) {
-			throw new Error('Incorrect email/password combination.');
+			throw new AppError('Email/password incorretos.');
 		}
 
 		const passwordMatched = await this.hashProvider.compareHash(
@@ -40,7 +41,7 @@ class AuthenticateNutritionistService {
 		);
 
 		if (!passwordMatched) {
-			throw new Error('Incorrect email/password combination');
+			throw new AppError('Email/password incorretos.');
 		}
 
 		const { secret, expiresIn } = authConfig.jwt;
