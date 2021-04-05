@@ -40,7 +40,11 @@ export default class FoodRepository implements IFoodRepository {
 				id,
 			},
 			include: {
-				substitutions: true,
+				substitutions: {
+					include: {
+						substitution: true,
+					},
+				},
 			},
 		});
 	}
