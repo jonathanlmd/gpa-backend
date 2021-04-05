@@ -45,7 +45,11 @@ export default class EatingPlanRepository implements IEatingPlanRepository {
 							include: {
 								food: {
 									include: {
-										substitutions: true,
+										substitutions: {
+											include: {
+												substitution: true,
+											},
+										},
 									},
 								},
 							},
