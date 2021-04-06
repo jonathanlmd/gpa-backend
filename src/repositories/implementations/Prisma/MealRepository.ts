@@ -13,6 +13,9 @@ export default class MealRepository implements IMealRepository {
 		const { eating_plan_id, name, observations } = meal;
 		return await this.prismaClient.meal.create({
 			data: { eating_plan_id, name, observations },
+			include: {
+				meal_has_food: true,
+			},
 		});
 	}
 
