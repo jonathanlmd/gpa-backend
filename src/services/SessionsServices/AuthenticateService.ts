@@ -44,10 +44,14 @@ class AuthenticatePatientService {
 			if (!user) {
 				throw new AppError('Email/password incorretos.');
 			}
+			if (!(user as Patient).access_authorization) {
+				throw new AppError('Usurário não autorizado');
+			}
 			role = 'patient';
 		} else {
 			role = 'nutritionist';
 		}
+
 		const passwordMatched = await this.hashProvider.compareHash(
 			password,
 			user.password,
